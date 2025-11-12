@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lá Pastelito’s</title>
+  </head>
+  <body>
+    <header>
+      <img
+        src="images/Logo-Pastelaria-Sem-fundo.png"
+        alt="Logo Lá Pastelito’s"
+        class="logo"
+      />
+     
+
+      <nav>
+        <button class="nav-btn" onclick="mostrarCategoria('salgados')">
+          Pasteis Salgados
+        </button>
+        <button class="nav-btn" onclick="mostrarCategoria('doces')">
+          Pasteis Doces
+        </button>
+        <button class="nav-btn" onclick="mostrarCategoria('bebidas')">
+          Bebidas
+        </button>
+        <button class="nav-btn" onclick="mostrarCategoria('porcoes')">
+          Porções
+        </button>
+        <button id="pedidos">
+           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" width="23" stroke-width="1.5" stroke="currentColor" class="size-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+</svg>
+        </button>
+      </nav>
+    </header>
+
+    <main>
+      <!-- Pasteis Salgados -->
+      <section id="salgados" class="categoria ativa">
+        <h2>Pasteis Salgados</h2>
+        <div class="grid-produtos">
+          <div class="produto">
+            <img
+              src="./images/pastel-carne.jpeg"
+              alt="Pastel de Carne"
+            />
+            <div class="informacoes">
+            <h3>Pastel de Carne</h3>
+            <p class="descricao"><h4>Descrição:</h4>Carne moída e molho extraordinário</p>
+            <p class="preco">R$ 7,00</p>
+        </div>
+        <button>Adicionar</button>
+          </div>
+          <div class="produto">
+            <img
+              src="./images/pastel-frango.jpeg"
+              alt="Pastel de Frango"
+            />
+            <div class="informacoes">
+            <h3>Pastel de Frango</h3>
+             <p class="descricao"><h4>Descrição:</h4>Frango e capricho no recheio</p>
+            <p class="preco">R$ 7,00</p>
+        </div>
+        <button>Adicionar</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pasteis Doces -->
+      <section id="doces" class="categoria">
+        <h2>Pasteis Doces</h2>
+        <div class="grid-produtos">
+          <div class="produto">
+            <img
+                src="./images/pastel-brigadeiro.jpg"        
+                alt="Pastel de Chocolate"
+            />
+            <div class="informacoes">
+            <h3>Pastel de Chocolate</h3>
+             <p class="descricao"><h4>Descrição:</h4>chocolate com morango</p>
+            <p class="preco">R$ 8,00</p>
+          </div>
+          <button>Adicionar</button>
+          </div>
+          <div class="produto">
+            <img
+              src="./images/pastel-banana.jpeg"
+              alt="Pastel de Banana"
+            />
+            <div class="informacoes">
+            <h3>Pastel de Banana</h3>
+             <p class="descricao"><h4>Descrição:</h4>nutella e banana</p>
+            <p class="preco">R$ 8,00</p>
+          </div>
+          <button>Adicionar</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bebidas -->
+      <section id="bebidas" class="categoria">
+        <h2>Bebidas</h2>
+        <div class="grid-produtos">
+          <div class="produto">
+            <img
+              src="./images/coca-cola.jpeg"
+              alt="Coca-Cola Lata"
+            />
+            <div class="informacoes">
+            <h3>Coca-Cola Lata 2L</h3>
+            <p class="preco">R$ 5,00</p>
+            
+          </div>
+          <button>Adicionar</button>
+          </div>
+          <div class="produto">
+            <img
+              src="./images/suco-laranja.jpeg"
+              alt="Suco Natural"
+            />
+            <div class="informacoes">
+            <h3>Suco Natural de Laranja 1L</h3>
+            <p class="preco">R$ 6,00</p>
+          </div>
+          <button>Adicionar</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Porções -->
+      <section id="porcoes" class="categoria">
+        <h2>Porções</h2>
+        <div class="grid-produtos">
+          <div class="produto">
+            <img
+              src="./images/batata-frita.jpeg"
+              alt="Batata Frita"
+            />
+            <div class="informacoes">
+            <h3>Batata Frita</h3>
+            
+            <p class="preco">R$ 15,00</p>
+          </div>
+          <button>Adicionar</button>
+          </div>
+          <div class="produto">
+            <img
+              src="./images/mandioca frita.jpeg"
+              alt="Mandioca Frita"
+            />
+            <div class="informacoes">
+            <h3>Mandioca Frita</h3>
+            <p class="preco">R$ 14,00</p>
+          </div>
+          <button>Adicionar</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>© 2025 Lá Pastelito’s — Delivery Tá On 🍴</p>
+      <p>DEV: Jhonatan Henrique dos Santos Pinheiro da Silva</p>
+      <p>Contato do DEV: +55 (69) 99389-7171</p>
+    </footer>
+
+  </body>
+</html>

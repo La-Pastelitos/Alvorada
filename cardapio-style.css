@@ -1,0 +1,181 @@
+:root {
+  --vermelho: #c12026;
+  --amarelo: #f7c331;
+  --laranja: #f79c1d;
+  --branco: #fcebf5;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--branco);
+  color: #222;
+  margin: 0;
+}
+
+header {
+  background: linear-gradient(90deg, var(--vermelho), var(--laranja));
+  padding: 15px;
+  text-align: center;
+  color: white;
+}
+#pedidos {
+  border: none;
+  background: transparent;
+  color: #fff;
+  margin-left: 2em;
+  position: absolute;
+  right: 8px;
+  top: 8px;
+}
+
+.logo {
+  width: 150px;
+  margin-bottom: 10px;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: auto;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+nav::-webkit-scrollbar {
+  display: none;
+}
+
+.nav-btn {
+  background-color: var(--amarelo);
+  color: #222;
+  border: none;
+  border-radius: 25px;
+  transition: 0.3s;
+  flex: 0 0 auto;
+}
+button {
+  font-weight: 600;
+  cursor: pointer;
+  padding: 12px;
+}
+
+.nav-btn:hover {
+  background-color: var(--laranja);
+  color: rgb(51, 51, 51);
+}
+
+.categoria {
+  display: none;
+  padding: 30px 20px;
+}
+
+.categoria.ativa {
+  display: block;
+}
+
+h2 {
+  color: var(--vermelho);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.grid-produtos {
+  display: grid;
+  grid-template-columns: auto-fit, minmax(180px, 1fr);
+  gap: 20px;
+  padding: 0 10px;
+}
+
+.produto {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 30px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  transition: transform 0.2s;
+  box-sizing: border-box;
+  overflow: hidden;
+  margin: 0;
+}
+
+.produto:hover {
+  transform: scale(1.06);
+}
+
+.produto img {
+  border-radius: 10px;
+  height: 70%;
+  margin: 0 10px;
+  object-fit: cover;
+  width: 30%;
+  flex-shrink: 0;
+}
+
+footer {
+  background-color: var(--vermelho);
+  color: white;
+  text-align: center;
+  padding: 15px 0;
+  font-size: 0.9em;
+  margin-top: 40px;
+}
+
+.descricao {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  flex: 1;
+  overflow-wrap: break-word;
+}
+.preco {
+  font-weight: bold;
+}
+
+#bebidas img {
+  height: 30vh;
+}
+.produto button {
+  border: none;
+  border-radius: 20px;
+  background: linear-gradient(90deg, var(--vermelho), var(--laranja));
+  margin-left: auto;
+  margin-right: 5px;
+  color: #252121;
+}
+.produto button:hover {
+  background: linear-gradient(220deg, var(--laranja), var(--vermelho));
+}
+strong {
+  margin-bottom: 6px;
+}
+
+@media (min-width: 860px) {
+  .grid-produtos {
+    justify-content: center;
+  }
+  .produto {
+    width: 50vw;
+  }
+  nav {
+    justify-content: center;
+  }
+}
+@media (max-width: 520px) {
+  body {
+    font-size: 0.8rem;
+  }
+  h1 {
+    font-size: 1.35rem;
+  }
+  h2 {
+    font-size: 1rem;
+  }
+  button {
+    font-size: 0.7rem;
+  }
+}

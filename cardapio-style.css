@@ -54,7 +54,7 @@ nav::-webkit-scrollbar {
   border-radius: 25px;
   transition: 0.3s;
   flex: 0 0 auto;
-  width: 16vw;
+  width: 18%;
 }
 .btn-nav-ativo {
   background-color: var(--laranja);

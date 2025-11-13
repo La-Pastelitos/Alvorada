@@ -54,7 +54,6 @@ nav::-webkit-scrollbar {
   border-radius: 25px;
   transition: 0.3s;
   flex: 0 0 auto;
-  width: 70px;
 }
 .btn-nav-ativo {
   background-color: var(--laranja);
@@ -169,7 +168,7 @@ strong {
   margin-bottom: 6px;
 }
 
-@media (min-width: 860px) {
+@media (min-width: 800px) {
   .grid-produtos {
     justify-content: center;
   }
@@ -179,8 +178,11 @@ strong {
   nav {
     justify-content: center;
   }
+  .nav-btn {
+    width: 15vw;
+  }
 }
-@media (max-width: 520px) {
+@media (max-width: 800px) {
   body {
     font-size: 0.8rem;
   }
@@ -192,5 +194,8 @@ strong {
   }
   button {
     font-size: 0.7rem;
+  }
+  .nav-btn {
+    width: 23vw;
   }
 }

@@ -110,11 +110,11 @@ h2 {
 }
 
 .produto img {
-  border-radius: 10px;
-  height: 70%;
+  border-radius: 6px;
+  width: 30%;
   margin: 0 10px;
   object-fit: cover;
-  width: 30%;
+  height: 100%;
   flex-shrink: 0;
 }
 
@@ -138,9 +138,6 @@ footer {
   font-weight: bold;
 }
 
-#bebidas img {
-  height: 30vh;
-}
 .produto button {
   border: none;
   border-radius: 20px;
@@ -173,7 +170,7 @@ strong {
     justify-content: center;
   }
   .produto {
-    width: 50vw;
+    width: 70vw;
   }
   nav {
     justify-content: center;
@@ -202,7 +199,7 @@ strong {
 
 @media (max-width: 420px) {
   .nav-btn {
-    width: 40vw;
+    width: 36vw;
   }
   body {
     font-size: 0.7rem;

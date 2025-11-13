@@ -182,7 +182,7 @@ strong {
     width: 15vw;
   }
 }
-@media (max-width: 800px) {
+@media (min-width: 421px) and (max-width: 799px) {
   body {
     font-size: 0.8rem;
   }
@@ -197,5 +197,11 @@ strong {
   }
   .nav-btn {
     width: 28vw;
+  }
+}
+
+@media (max-width: 420px) {
+  .nav-btn {
+    width: 40vw;
   }
 }

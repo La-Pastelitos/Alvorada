@@ -204,4 +204,16 @@ strong {
   .nav-btn {
     width: 40vw;
   }
+  body {
+    font-size: 0.7rem;
+  }
+  h1 {
+    font-size: 1.28rem;
+  }
+  h2 {
+    font-size: 0.9rem;
+  }
+  button {
+    font-size: 0.6rem;
+  }
 }

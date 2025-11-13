@@ -111,10 +111,8 @@ h2 {
 
 .produto img {
   border-radius: 6px;
-  width: 30%;
-  margin: 0 10px;
+  margin: 0;
   object-fit: cover;
-  height: 100%;
   flex-shrink: 0;
 }
 
@@ -178,6 +176,10 @@ strong {
   .nav-btn {
     width: 15vw;
   }
+  .produto img {
+    width: 22%;
+    height: 100%;
+  }
 }
 @media (min-width: 421px) and (max-width: 799px) {
   body {
@@ -194,6 +196,10 @@ strong {
   }
   .nav-btn {
     width: 28vw;
+  }
+  .produto img {
+    width: 33%;
+    height: 100%;
   }
 }
 
@@ -212,5 +218,9 @@ strong {
   }
   button {
     font-size: 0.6rem;
+  }
+  .produto img {
+    width: 26%;
+    height: 100%;
   }
 }

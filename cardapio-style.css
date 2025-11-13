@@ -54,13 +54,13 @@ nav::-webkit-scrollbar {
   border-radius: 25px;
   transition: 0.3s;
   flex: 0 0 auto;
-  width: 8vw;
+  width: 16vw;
 }
 .btn-nav-ativo {
   background-color: var(--laranja);
   box-shadow: 0 0 6px #ff9752;
-  transform: scale(1.06);
-  margin: 0 3px;
+  transform: scale(1.07);
+  margin: 0 8px;
 }
 button {
   font-weight: 600;
@@ -110,16 +110,6 @@ h2 {
   margin: 0;
 }
 
-.produto:hover {
-  transform: scale(1.1);
-
-  button {
-    display: block;
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
 .produto img {
   border-radius: 10px;
   height: 70%;
@@ -160,8 +150,17 @@ footer {
   color: #252121;
   opacity: 0;
   margin-left: auto;
-  transition: opacity 0.8s ease, transform 0.6s ease;
+  transition: opacity 0.8s ease, transform 0.45s ease;
   transform: translateX(-120px);
+}
+.produto:hover {
+  transform: scale(1.1);
+
+  button {
+    display: block;
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 .produto button:hover {
   background: linear-gradient(180deg, var(--laranja), var(--vermelho));

@@ -33,7 +33,7 @@ function showMessage(msg, tempo = 2000) {
     mensagemDiv = document.createElement("div");
     mensagemDiv.id = "mensagem-info";
     mensagemDiv.style.position = "fixed";
-    mensagemDiv.style.top = "20px";
+    mensagemDiv.style.top = "60px";
     mensagemDiv.style.right = "20px";
     mensagemDiv.style.background = "#333";
     mensagemDiv.style.color = "#fff";
@@ -90,14 +90,12 @@ document.querySelectorAll(".produto").forEach((produto) => {
   });
 });
 
-/* ======= FECHAR MODAL ======= */
 function fecharModal() {
   modal.style.display = "none";
   overlay.style.display = "none";
 }
 overlay.addEventListener("click", fecharModal);
 
-/* ======= BOTÕES MOLHOS ======= */
 document.querySelectorAll(".btn-add-molho").forEach((botao) => {
   botao.addEventListener("click", () => {
     const container = botao.parentElement;

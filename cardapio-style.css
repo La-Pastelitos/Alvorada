@@ -11,6 +11,9 @@ body {
   color: #222;
   margin: 0;
 }
+body::-webkit-scrollbar {
+  display: none;
+}
 
 header {
   background: linear-gradient(90deg, var(--vermelho), var(--laranja));
@@ -191,13 +194,6 @@ strong {
   overflow: hidden;
   max-height: 90%;
   width: 80%;
-
-  justify-content: center;
-}
-.modal h2 {
-  margin-top: 7px;
-}
-.modal-conteudo {
   padding: 30px 20px 20px 20px;
   gap: 20px;
   flex-direction: column;
@@ -206,14 +202,26 @@ strong {
   -webkit-overflow-scrolling: touch;
   overflow-x: hidden;
   flex-wrap: nowrap;
-  display: flex;
 }
+.modal h2 {
+  margin-top: 7px;
+}
+.modal-img-nome {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+
+  h2 {
+    margin-top: 10px;
+  }
+}
+
 .modal-conteudo::-webkit-scrollbar {
   display: none;
 }
 #modal-img {
   width: 100%;
-  height: 180px;
+  height: 240px;
   border-radius: 10px;
   object-fit: cover;
 }
@@ -226,7 +234,6 @@ strong {
 
 .modal textarea,
 .modal select {
-  width: 93%;
   margin: 8px 0;
   padding: 8px;
   border-radius: 8px;
@@ -257,20 +264,35 @@ strong {
 }
 .molho-adicionar {
   display: flex;
-  gap: 5px;
+  gap: 10px;
   align-items: center;
-  justify-content: space-between;
 }
-
+.btn-add-molho {
+  position: absolute;
+  display: flex;
+  right: 20px;
+  gap: 12px;
+}
+.btn-sub-molho {
+  position: absolute;
+  display: flex;
+  right: 60px;
+  gap: 12px;
+}
 .molho-adicionar button {
   border: none;
   background-color: #949494;
   border-radius: 50%;
-  padding: 2px;
+  padding: 2px 3px;
 }
 .molho-adicionar p {
   display: flex;
   align-items: center;
+}
+.preco-molho {
+  margin: 0 auto;
+  position: absolute;
+  left: 50%;
 }
 .preco-total {
   display: flex;
@@ -278,13 +300,12 @@ strong {
 }
 #count-carrinho {
   background-color: var(--vermelho);
-  padding: 3px;
+  padding: 3px 6px;
   border-radius: 50%;
 }
-/* Neutraliza dark mode automático */
 @media (prefers-color-scheme: dark) {
   :root {
-    color-scheme: light; /* força cores claras */
+    color-scheme: light;
   }
 }
 
@@ -307,7 +328,7 @@ strong {
     height: 130px;
   }
   .modal {
-    width: 40vw;
+    width: 35%;
   }
 }
 @media (min-width: 480px) and (max-width: 799px) {
@@ -334,6 +355,9 @@ strong {
     width: 110px;
     height: 110px;
   }
+  #modal-img {
+    height: 220px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -359,5 +383,8 @@ strong {
   .produto img {
     width: 90px;
     height: 90px;
+  }
+  #modal-img {
+    height: 180px;
   }
 }

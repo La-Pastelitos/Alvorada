@@ -18,13 +18,9 @@ function calcularTotal(cart) {
   );
 }
 
-/* ======= ELEMENTOS ======= */
 const container = document.getElementById("carrinho-conteudo");
 const textoTotal = document.getElementById("texto-total");
 
-/* ==========================================
-          FUNÇÃO RENDER COM EDITAR + REMOVER
-   ========================================== */
 function renderCart() {
   const cart = loadCart();
 
@@ -52,7 +48,6 @@ function renderCart() {
         <td>${item.nome}</td>
         <td>${item.qty}</td>
         <td>${molhosText}</td>
-        <td>${item.observacoes || "-"}</td>
         <td>${formatNumberToBRL(item.subtotal)}</td>
 
         <td class="td-editar-remover">

@@ -74,9 +74,6 @@ td:nth-child(4) {
   font-size: 14px;
 }
 
-/* ================================
-        BOTÕES TABELA
-================================= */
 .btn-editar,
 .btn-remover {
   padding: 8px 14px;
@@ -109,14 +106,10 @@ td:nth-child(4) {
   background: #c0392b;
 }
 
-/* ================================
-       TOTAL FINAL
-================================= */
 .total-final {
   margin-top: 20px;
   font-size: 22px;
   font-weight: 700;
-  text-align: right;
 }
 
 #finalizar-btn {
@@ -134,9 +127,6 @@ td:nth-child(4) {
   background: #219150;
 }
 
-/* ================================
-        MODAL GERAL
-================================= */
 .modal-fixed {
   display: none;
   position: fixed;
@@ -158,28 +148,24 @@ td:nth-child(4) {
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.25);
 }
 
-/* Título modal */
 .modal-card h3,
 .janela h3 {
   margin: 0 0 15px;
   text-align: center;
   font-size: 22px;
-  color: #333;
+  color: var(--vermelho);
 }
 
-/* ================================
-        FORMULÁRIOS
-================================= */
 input,
 textarea,
 select {
-  width: 100%;
+  width: 95%;
   padding: 10px;
   font-size: 15px;
   margin-bottom: 12px;
   border-radius: 8px;
   border: 1px solid #ccc;
-  transition: 0.2s;
+  transition: 0.4s;
   outline: none;
 }
 
@@ -190,15 +176,11 @@ select:focus {
   box-shadow: 0 0 6px rgba(52, 152, 219, 0.5);
 }
 
-/* inputs lado a lado */
 .form-row {
   display: flex;
   gap: 10px;
 }
 
-/* ================================
-        BOTÕES DO MODAL
-================================= */
 #salvar-edicao,
 #confirmar-finalizar {
   background: #2ecc71;
@@ -228,7 +210,9 @@ select:focus {
 #fechar-finalizar:hover {
   background: #636e72;
 }
-
+#texto-total {
+  font-size: 1rem;
+}
 #remover-item {
   background: #e74c3c;
   color: white;
@@ -289,5 +273,46 @@ textarea.erro {
   to {
     transform: scale(1);
     opacity: 1;
+  }
+}
+@media (min-width: 480px) and (max-width: 799px) {
+  body {
+    font-size: 0.8rem;
+  }
+  h1 {
+    font-size: 1.25rem;
+  }
+  h2 {
+    font-size: 1rem;
+  }
+
+  button {
+    font-size: 0.9rem;
+  }
+  #finalizar-btn {
+    font-size: 0.9rem;
+  }
+  .total-final {
+    font-size: 0.9rem;
+  }
+}
+@media (max-width: 480px) {
+  body {
+    font-size: 0.7rem;
+  }
+  h1 {
+    font-size: 1.28rem;
+  }
+  h2 {
+    font-size: 0.9rem;
+  }
+  button {
+    font-size: 0.6rem;
+  }
+  #finalizar-btn {
+    font-size: 0.85rem;
+  }
+  .total-final {
+    font-size: 0.85rem;
   }
 }

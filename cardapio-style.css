@@ -104,7 +104,7 @@ h2 {
   background: white;
   border-radius: 15px;
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
-  padding: 9px 11px;
+  padding: 7px 11px;
   transition: transform 0.2s;
   overflow: hidden;
   margin: 0;
@@ -198,7 +198,7 @@ strong {
   margin-top: 7px;
 }
 .modal-conteudo {
-  padding: 40px 20px 20px 20px;
+  padding: 26px 20px 20px 20px;
   gap: 20px;
   flex-direction: column;
   overflow-y: auto;
@@ -236,7 +236,7 @@ strong {
 
 .fechar {
   position: absolute;
-  top: 8px;
+  top: 5px;
   right: 13px;
   font-size: 28px;
   color: #333;

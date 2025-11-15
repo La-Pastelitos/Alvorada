@@ -11,29 +11,61 @@ botoes.forEach((btn) => {
     btn.classList.add("btn-nav-ativo");
   });
 });
-// Selecionar modal e overlay
+function formatNumberToBRL(num) {
+  return "R$ " + num.toFixed(2).replace(".", ",");
+}
+function loadCart() {
+  return JSON.parse(localStorage.getItem("lp_cart") || "[]");
+}
+function saveCart(cart) {
+  localStorage.setItem("lp_cart", JSON.stringify(cart));
+}
+function updateCartCount() {
+  const cart = loadCart();
+  const countEl = document.getElementById("count-carrinho");
+  if (!countEl) return;
+  const totalItems = cart.reduce((s, it) => s + (it.qty || 1), 0);
+  countEl.innerText = totalItems;
+}
+function showMessage(msg, tempo = 2000) {
+  let mensagemDiv = document.getElementById("mensagem-info");
+  if (!mensagemDiv) {
+    mensagemDiv = document.createElement("div");
+    mensagemDiv.id = "mensagem-info";
+    mensagemDiv.style.position = "fixed";
+    mensagemDiv.style.top = "20px";
+    mensagemDiv.style.right = "20px";
+    mensagemDiv.style.background = "#333";
+    mensagemDiv.style.color = "#fff";
+    mensagemDiv.style.padding = "12px 18px";
+    mensagemDiv.style.borderRadius = "8px";
+    mensagemDiv.style.zIndex = "1000";
+    mensagemDiv.style.display = "none";
+    document.body.appendChild(mensagemDiv);
+  }
+  mensagemDiv.innerText = msg;
+  mensagemDiv.style.display = "block";
+  setTimeout(() => (mensagemDiv.style.display = "none"), tempo);
+}
+
+/* ======= MODAL PRODUTO ======= */
 const modal = document.getElementById("modal-produto");
 const overlay = document.getElementById("overlay");
-
-// Elementos dentro do modal
 const modalImg = document.getElementById("modal-img");
 const modalTitulo = document.getElementById("modal-nome");
 const modalObservacoes = document.getElementById("observacoes");
 const modalDescricao = document.getElementById("modal-descricao");
 const modalPreco = document.getElementById("modal-preco");
 const modalPrecoTotal = document.getElementById("modal-preco-total");
-const btnAdicionar = document.getElementById("btn-adicionar"); // botão enviar pedido
+const btnAdicionar = document.getElementById("btn-adicionar");
 
-let precoPastel = 0; // preço base do pastel
-let totalProduto = 0; // total com molhos
-let molhosSelecionados = {}; // objeto para guardar quantidade de cada molho
+let precoPastel = 0;
+let totalProduto = 0;
+let molhosSelecionados = {};
 
-// Seleciona todos os produtos
-const produtos = document.querySelectorAll(".produto");
-
-produtos.forEach((produto) => {
+/* ======= ABRIR MODAL PRODUTO ======= */
+document.querySelectorAll(".produto").forEach((produto) => {
   const btn = produto.querySelector("button");
-
   btn.addEventListener("click", () => {
     const imgSrc = produto.querySelector("img").src;
     const titulo = produto.querySelector("h3").innerText;
@@ -41,125 +73,124 @@ produtos.forEach((produto) => {
       produto.querySelector(".descricao")?.innerText || "Sem descrição!";
     const precoTexto = produto.querySelector(".preco").innerText;
 
-    // Define o preço do pastel e total inicial
     precoPastel = parseFloat(precoTexto.replace("R$", "").replace(",", "."));
     totalProduto = precoPastel;
 
-    // Reseta molhos e observações
     molhosSelecionados = {};
     modalObservacoes.value = "";
 
-    // Preenche o modal
     modalImg.src = imgSrc;
     modalTitulo.innerText = titulo;
     modalDescricao.innerText = descricao;
     modalPreco.innerText = precoTexto;
     atualizarPrecoNoModal();
 
-    // Abre modal
     modal.style.display = "flex";
     overlay.style.display = "block";
   });
 });
 
-// Fechar modal
+/* ======= FECHAR MODAL ======= */
 function fecharModal() {
   modal.style.display = "none";
   overlay.style.display = "none";
 }
-
 overlay.addEventListener("click", fecharModal);
 
-// Botões de adicionar molho
-const botoesMolho = document.querySelectorAll(".btn-add-molho");
-
-botoesMolho.forEach((botao) => {
+/* ======= BOTÕES MOLHOS ======= */
+document.querySelectorAll(".btn-add-molho").forEach((botao) => {
   botao.addEventListener("click", () => {
     const container = botao.parentElement;
     const nomeMolho = container.querySelector("p").innerText.trim();
-    const precoMolhoTexto = container.querySelector(".preco-molho").innerText;
     const precoMolho = parseFloat(
-      precoMolhoTexto.replace("R$", "").replace(",", ".")
+      container
+        .querySelector(".preco-molho")
+        .innerText.replace("R$", "")
+        .replace(",", ".")
     );
 
     totalProduto += precoMolho;
-
-    // Incrementa quantidade do molho
-    if (molhosSelecionados[nomeMolho]) {
-      molhosSelecionados[nomeMolho]++;
-    } else {
-      molhosSelecionados[nomeMolho] = 1;
-    }
+    molhosSelecionados[nomeMolho] = (molhosSelecionados[nomeMolho] || 0) + 1;
 
     atualizarPrecoNoModal();
   });
 });
 
-// Botões de subtrair molho
-const botoesSubMolho = document.querySelectorAll(".btn-sub-molho");
-
-botoesSubMolho.forEach((botao) => {
+document.querySelectorAll(".btn-sub-molho").forEach((botao) => {
   botao.addEventListener("click", () => {
     const container = botao.parentElement;
     const nomeMolho = container.querySelector("p").innerText.trim();
-    const precoMolhoTexto = container.querySelector(".preco-molho").innerText;
     const precoMolho = parseFloat(
-      precoMolhoTexto.replace("R$", "").replace(",", ".")
+      container
+        .querySelector(".preco-molho")
+        .innerText.replace("R$", "")
+        .replace(",", ".")
     );
 
-    // Subtrai mas nunca abaixo do preço do pastel
-    totalProduto = Math.max(precoPastel, totalProduto - precoMolho);
-
-    // Decrementa quantidade do molho
-    if (molhosSelecionados[nomeMolho]) {
+    if (molhosSelecionados[nomeMolho] > 0) {
       molhosSelecionados[nomeMolho]--;
-      if (molhosSelecionados[nomeMolho] === 0) {
-        delete molhosSelecionados[nomeMolho]; // remove se quantidade = 0
-      }
+      totalProduto = Math.max(precoPastel, totalProduto - precoMolho);
+      if (molhosSelecionados[nomeMolho] === 0)
+        delete molhosSelecionados[nomeMolho];
     }
 
     atualizarPrecoNoModal();
   });
 });
 
-// Atualizar preço total no modal
+/* ======= ATUALIZAR PREÇO ======= */
 function atualizarPrecoNoModal() {
-  modalPrecoTotal.innerText = "R$ " + totalProduto.toFixed(2).replace(".", ",");
+  modalPrecoTotal.innerText = formatNumberToBRL(totalProduto);
 }
 
-// Botão de enviar pedido para WhatsApp
+/* ======= ADICIONAR AO CARRINHO ======= */
 btnAdicionar.addEventListener("click", () => {
   const observacoesValor = modalObservacoes.value.trim();
   const nomePastel = modalTitulo.innerText;
+  const imgSrc = modalImg.src || "";
 
-  let mensagem = `Olá! Quero pedir:\n`;
-  mensagem += `*Pastel:* ${nomePastel}\n`;
-
-  // Monta lista de molhos com quantidade
   const molhosArray = [];
   for (let molho in molhosSelecionados) {
-    const qtd = molhosSelecionados[molho];
-    molhosArray.push(qtd > 1 ? `${molho} x${qtd}` : molho);
+    molhosArray.push({ nome: molho, qtd: molhosSelecionados[molho] });
   }
 
-  if (molhosArray.length > 0) {
-    mensagem += `*Molhos:* ${molhosArray.join(", ")}\n`;
+  const item = {
+    id: Date.now().toString(),
+    nome: nomePastel,
+    preco: precoPastel,
+    molhos: molhosArray,
+    observacoes: observacoesValor,
+    qty: 1,
+    imagem: imgSrc,
+    subtotal: totalProduto,
+  };
+
+  const cart = loadCart();
+  const igualIndex = cart.findIndex(
+    (it) =>
+      it.nome === item.nome &&
+      JSON.stringify(it.molhos) === JSON.stringify(item.molhos) &&
+      (it.observacoes || "") === (item.observacoes || "") &&
+      it.preco === item.preco
+  );
+
+  if (igualIndex > -1) {
+    cart[igualIndex].qty += 1;
+    cart[igualIndex].subtotal += totalProduto;
+  } else {
+    cart.push(item);
   }
 
-  mensagem += `*Total:* R$ ${totalProduto.toFixed(2).replace(".", ",")}\n`;
-
-  if (observacoesValor) {
-    mensagem += `*Observações:* ${observacoesValor}`;
-  }
-
-  // Número do WhatsApp
-  const numero = "+556993603059";
-  const linkWhatsApp =
-    "https://wa.me/" +
-    numero.replace(/\D/g, "") +
-    "?text=" +
-    encodeURIComponent(mensagem);
-
-  // Abre o WhatsApp com a mensagem pronta
-  window.open(linkWhatsApp, "_blank");
+  saveCart(cart);
+  updateCartCount();
+  fecharModal();
+  showMessage("Produto adicionado ao carrinho!");
 });
+
+/* ======= ABRIR CARRINHO ======= */
+document.getElementById("pedidos").addEventListener("click", () => {
+  window.location.href = "carrinho-index.html";
+});
+
+/* ======= INICIALIZAÇÃO ======= */
+document.addEventListener("DOMContentLoaded", updateCartCount);

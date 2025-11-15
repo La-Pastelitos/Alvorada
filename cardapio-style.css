@@ -198,7 +198,7 @@ strong {
   margin-top: 7px;
 }
 .modal-conteudo {
-  padding: 26px 20px 20px 20px;
+  padding: 30px 20px 20px 20px;
   gap: 20px;
   flex-direction: column;
   overflow-y: auto;
@@ -275,6 +275,11 @@ strong {
 .preco-total {
   display: flex;
   gap: 10px;
+}
+#count-carrinho {
+  background-color: var(--vermelho);
+  padding: 3px;
+  border-radius: 50%;
 }
 /* Neutraliza dark mode automático */
 @media (prefers-color-scheme: dark) {

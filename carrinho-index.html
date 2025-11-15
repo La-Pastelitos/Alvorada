@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Carrinho — Lá Pastelito’s</title>
+    <link rel="stylesheet" href="carrinho-style.css" />
+    <style></style>
+  </head>
+  <body>
+    <header>
+      <img
+        src="./images/Logo-La-Pastelitos-sem-fundo.png"
+        alt="logo"
+        class="logo"
+      />
+    </header>
+
+    <main class="container">
+      <h1>Seu Carrinho</h1>
+
+      <div id="carrinho-conteudo"></div>
+
+      <div class="total-final">
+        <span id="texto-total">Total: R$ 0,00</span>
+      </div>
+
+      <div style="margin-top: 20px">
+        <button id="finalizar-btn">Finalizar Pedido</button>
+      </div>
+    </main>
+
+    <!-- Modal de edição de item -->
+    <div id="modal-editar" class="modal-fixed">
+      <div class="modal-card">
+        <h3>Editar item</h3>
+        <div id="editar-corpo">
+          <!-- preenchido via JS -->
+        </div>
+        <div style="text-align: right; margin-top: 10px">
+          <button id="salvar-edicao">Salvar</button>
+          <button id="fechar-editar">Fechar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal finalizar: coleta endereço, telefone e pagamento -->
+    <div id="modal-finalizar" class="modal-fixed">
+      <div class="modal-card">
+        <h3>Finalizar Pedido</h3>
+        <div>
+          <label>Bairro</label>
+          <input id="input-bairro" type="text" />
+          <label>Rua</label>
+          <input id="input-rua" type="text" />
+          <div class="form-row">
+            <input id="input-numero" type="text" placeholder="Número" />
+            <input
+              id="input-complemento"
+              type="text"
+              placeholder="Complemento (ex: Casa, Ap 101)"
+            />
+          </div>
+          <label>Nome</label>
+          <input id="input-nome" type="text" />
+          <label>Telefone (WhatsApp)</label>
+          <input id="input-telefone" type="text" placeholder="(69)..." />
+          <label>Forma de pagamento</label>
+          <select id="input-pagamento">
+            <option value="Pix">Pix</option>
+            <option value="Dinheiro">Dinheiro</option>
+            <option value="Cartão na entrega">Cartão na entrega</option>
+          </select>
+        </div>
+
+        <div style="text-align: right; margin-top: 12px">
+          <button id="confirmar-finalizar">Enviar pedido via WhatsApp</button>
+          <button id="fechar-finalizar">Cancelar</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="carrinho-main.js"></script>
+  </body>
+</html>

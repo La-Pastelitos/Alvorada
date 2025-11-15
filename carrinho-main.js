@@ -38,14 +38,6 @@ function renderCart() {
   let html = `
     <table>
       <thead>
-        <tr>
-          <th>Produto</th>
-          <th>Qtd</th>
-          <th>Molhos</th>
-          <th>Obs</th>
-          <th>Subtotal</th>
-          <th>Ações</th>
-        </tr>
       </thead>
       <tbody>
   `;
@@ -63,7 +55,7 @@ function renderCart() {
         <td>${item.observacoes || "-"}</td>
         <td>${formatNumberToBRL(item.subtotal)}</td>
 
-        <td>
+        <td class="td-editar-remover">
           <button class="btn-editar" data-id="${item.id}">Editar</button>
           <button class="btn-remover" data-id="${item.id}">Excluir</button>
         </td>

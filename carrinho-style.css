@@ -37,9 +37,6 @@ h1 {
   color: var(--vermelho);
 }
 
-/* ================================
-         TABELA DO CARRINHO
-================================= */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -88,6 +85,10 @@ td:nth-child(4) {
   cursor: pointer;
   font-size: 14px;
   transition: 0.2s;
+  margin: 5px;
+}
+.td-editar-remover {
+  display: flex;
 }
 
 /* Editar */
@@ -236,6 +237,15 @@ select:focus {
   border-radius: 8px;
   border: none;
   cursor: pointer;
+}
+#carrinho-conteudo {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  -ms-overflow-style: auto;
+}
+#carrinho-conteudo::-webkit-scrollbar {
+  display: none;
 }
 #remover-item:hover {
   background: #c0392b;

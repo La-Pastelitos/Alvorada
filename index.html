@@ -189,10 +189,10 @@
         <div class="modal-conteudo">
           <div class="img-centro">
             <img id="modal-img" src="" alt="Foto do pastel" />
+            <h2 id="modal-nome"></h2>
           </div>
 
           <div class="info-produto">
-            <h2 id="modal-nome"></h2>
             <div class="modal-descricao">
               <p><strong>Descrição:</strong></p>
               <p id="modal-descricao"></p>
@@ -206,20 +206,21 @@
               placeholder="Ex: sem cebola..."
             ></textarea>
 
-            <section class="Molhos">
+            <section class="molhos">
               <h2>Molhos:</h2>
               <div class="molho-adicionar">
                 <p>
                   <img src="./images/molho-verde.png" alt="molho Verde" />
                   Molho Verde
                 </p>
-                <p class="preco">3,00R$</p>
-                <button>
+
+                <p class="preco preco-molho">R$ 3,00</p>
+                <button class="btn-add-molho">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
-                    width="20"
+                    width="23"
                     stroke-width="1.5"
                     stroke="currentColor"
                     class="size-6"
@@ -231,11 +232,72 @@
                     />
                   </svg>
                 </button>
+                <button class="btn-sub-molho">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    width="23"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="size-6"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M5 12h14"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div class="molho-adicionar">
+                <p>
+                  <img src="./images/molho-verde.png" alt="molho Verde" />
+                  Maionese
+                </p>
+
+                <p class="preco preco-molho">R$ 3,00</p>
+                <button class="btn-add-molho">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    width="23"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="size-6"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M12 4.5v15m7.5-7.5h-15"
+                    />
+                  </svg>
+                </button>
+                <button class="btn-sub-molho">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    width="23"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="size-6"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M5 12h14"
+                    />
+                  </svg>
+                </button>
               </div>
             </section>
-            <button id="btn-adicionar" onclick="adicionarAoCarrinho()">
-              Adicionar ao Pedido
-            </button>
+            <div class="preco-total">
+              <p><strong>Preço total:</strong></p>
+              <p id="modal-preco-total"></p>
+            </div>
+            <button id="btn-adicionar">Adicionar ao Pedido</button>
           </div>
         </div>
       </div>

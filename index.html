@@ -55,9 +55,10 @@
             <img src="./images/pastel-carne.jpeg" alt="Pastel de carne" />
             <div class="informacoes">
               <h3>Pastel de Carne</h3>
-              <p class="descricao">
-                <strong>Descrição:</strong> Carne moída e molho extraordinário
-              </p>
+              <div class="informacao-display">
+                <p><strong>Descrição:</strong></p>
+                <p class="descricao">Carne moída e molho extraordinário</p>
+              </div>
               <p class="preco">R$ 7,00</p>
             </div>
             <button>Adicionar</button>
@@ -66,9 +67,12 @@
             <img src="./images/pastel-frango.jpeg" alt="Pastel de frango" />
             <div class="informacoes">
               <h3>Pastel de Frango</h3>
-              <p class="descricao">
-                <strong>Descrição:</strong> Frango e capricho no recheio
-              </p>
+              <div class="informacao-display">
+                <p><strong>Descrição:</strong></p>
+
+                <p class="descricao">Frango e capricho no recheio</p>
+              </div>
+
               <p class="preco">R$ 7,00</p>
             </div>
             <button>Adicionar</button>
@@ -77,9 +81,10 @@
             <img src="./images/pastel-carne.jpeg" alt="Pastel de carne" />
             <div class="informacoes">
               <h3>Pastel de Carne</h3>
-              <p class="descricao">
-                <strong>Descrição:</strong> Carne moída e molho extraordinário
-              </p>
+              <div class="informacao-display">
+                <p><strong>Descrição:</strong></p>
+                <p class="descricao">Carne moída e molho extraordinário</p>
+              </div>
               <p class="preco">R$ 7,00</p>
             </div>
             <button>Adicionar</button>
@@ -88,9 +93,10 @@
             <img src="./images/pastel-frango.jpeg" alt="Pastel de frango" />
             <div class="informacoes">
               <h3>Pastel de Frango</h3>
-              <p class="descricao">
-                <strong>Descrição: </strong> Frango e capricho no recheio
-              </p>
+              <div class="informacao-display">
+                <p><strong>Descrição: </strong></p>
+                <p class="descricao">Frango e capricho no recheio</p>
+              </div>
               <p class="preco">R$ 7,00</p>
             </div>
             <button>Adicionar</button>
@@ -108,9 +114,10 @@
             />
             <div class="informacoes">
               <h3>Pastel de Chocolate</h3>
-              <p class="descricao">
-                <strong>Descrição:</strong> chocolate com morango
-              </p>
+              <div class="informacao-display">
+                <p><strong>Descrição:</strong></p>
+                <p class="descricao">chocolate com morango</p>
+              </div>
               <p class="preco">R$ 8,00</p>
             </div>
             <button>Adicionar</button>
@@ -120,9 +127,10 @@
 
             <div class="informacoes">
               <h3>Pastel de Banana</h3>
-              <p class="descricao">
-                <strong>Descrição:</strong> nutella e banana
-              </p>
+              <div class="informacao-display">
+                <p><strong>Descrição:</strong></p>
+                <p class="descricao">nutella e banana</p>
+              </div>
               <p class="preco">R$ 8,00</p>
             </div>
             <button>Adicionar</button>
@@ -174,6 +182,63 @@
           </div>
         </div>
       </section>
+      <div id="overlay" class="overlay"></div>
+
+      <div id="modal-produto" class="modal">
+        <span class="fechar" onclick="fecharModal()">&times;</span>
+        <div class="modal-conteudo">
+          <div class="img-centro">
+            <img id="modal-img" src="" alt="Foto do pastel" />
+          </div>
+
+          <div class="info-produto">
+            <h2 id="modal-nome"></h2>
+            <div class="modal-descricao">
+              <p><strong>Descrição:</strong></p>
+              <p id="modal-descricao"></p>
+            </div>
+
+            <p><strong id="modal-preco"></strong></p>
+
+            <label for="observacoes">Observações:</label>
+            <textarea
+              id="observacoes"
+              placeholder="Ex: sem cebola..."
+            ></textarea>
+
+            <section class="Molhos">
+              <h2>Molhos:</h2>
+              <div class="molho-adicionar">
+                <p>
+                  <img src="./images/molho-verde.png" alt="molho Verde" />
+                  Molho Verde
+                </p>
+                <p class="preco">3,00R$</p>
+                <button>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    width="20"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="size-6"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M12 4.5v15m7.5-7.5h-15"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </section>
+            <button id="btn-adicionar" onclick="adicionarAoCarrinho()">
+              Adicionar ao Pedido
+            </button>
+          </div>
+        </div>
+      </div>
     </main>
 
     <footer>

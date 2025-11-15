@@ -198,13 +198,14 @@ strong {
   margin-top: 7px;
 }
 .modal-conteudo {
-  flex-wrap: wrap;
   padding: 40px 20px 20px 20px;
   gap: 20px;
   flex-direction: column;
   overflow-y: auto;
   scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
+  overflow-x: hidden;
+  flex-wrap: nowrap;
   display: flex;
 }
 .modal-conteudo::-webkit-scrollbar {

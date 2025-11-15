@@ -275,6 +275,12 @@ strong {
   display: flex;
   gap: 10px;
 }
+/* Neutraliza dark mode automático */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: light; /* força cores claras */
+  }
+}
 
 @media (min-width: 800px) {
   .grid-produtos {

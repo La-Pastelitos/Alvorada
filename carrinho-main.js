@@ -229,7 +229,57 @@ confirmarFinalizar.addEventListener("click", () => {
 
   if (!valido) return;
 
-  // resto igual...
+  const bairro = document.getElementById("input-bairro").value.trim();
+  const rua = document.getElementById("input-rua").value.trim();
+  const numero = document.getElementById("input-numero").value.trim();
+  const complemento = document.getElementById("input-complemento").value.trim();
+  const nome = document.getElementById("input-nome").value.trim();
+  const telefone = document.getElementById("input-telefone").value.trim();
+  const pagamento = document.getElementById("input-pagamento").value;
+
+  const cart = loadCart();
+  if (!cart.length) return alert("Seu carrinho está vazio!");
+
+  let mensagem = "Olá! Gostaria de fazer um pedido:\n\n";
+
+  cart.forEach((it, i) => {
+    mensagem += `${i + 1}. ${it.nome} — Qtd: ${it.qty}\n`;
+
+    const molhosAtivos = it.molhos.filter((m) => m.qtd > 0);
+    if (molhosAtivos.length) {
+      mensagem += `Molhos: ${molhosAtivos
+        .map((m) => m.nome + " x" + m.qtd)
+        .join(", ")}\n`;
+    }
+
+    if (it.observacoes) mensagem += `Obs: ${it.observacoes}\n`;
+
+    mensagem += `Subtotal: ${formatNumberToBRL(it.subtotal)}\n\n`;
+  });
+
+  mensagem += `Total: ${formatNumberToBRL(calcularTotal(cart))}\n\n`;
+
+  mensagem += "Entrega:\n";
+  mensagem += `Rua: ${rua}, Nº: ${numero}\n`;
+  if (complemento) mensagem += `Complemento: ${complemento}\n`;
+  mensagem += `Bairro: ${bairro}\n`;
+  mensagem += `Nome: ${nome}\n`;
+  mensagem += `Telefone: ${telefone}\n`;
+  mensagem += `Pagamento: ${pagamento}\n\nObrigado!`;
+
+  const numeroDest = "+556993603059";
+
+  const link =
+    "https://wa.me/" +
+    numeroDest.replace(/\D/g, "") +
+    "?text=" +
+    encodeURIComponent(mensagem);
+
+  window.open(link, "_blank");
+
+  localStorage.removeItem("lp_cart");
+  renderCart();
+  modalFinalizar.style.display = "none";
 });
 
 /* ======= INICIALIZAÇÃO ======= */

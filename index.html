@@ -4,12 +4,29 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="color-scheme" content="light" />
-
     <title>Lá Pastelito’s</title>
     <link rel="stylesheet" href="cardapio-style.css" />
   </head>
   <body>
     <header>
+      <button id="menu" class="btn-admim">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          width="23"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="size-6"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
+          />
+        </svg>
+      </button>
+
       <button id="pedidos">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -33,7 +50,6 @@
         alt="Logo Lá Pastelito’s"
         class="logo"
       />
-
       <nav>
         <button class="nav-btn" onclick="mostrarCategoria('salgados')">
           Pasteis Salgados
@@ -49,6 +65,108 @@
         </button>
       </nav>
     </header>
+    <!-- MENU LATERAL -->
+    <div id="sidebar-overlay"></div>
+
+    <aside id="sidebar">
+      <button id="close-sidebar">&times;</button>
+
+      <h3>Menu Administrativo</h3>
+
+      <ul class="sidebar-options">
+        <li onclick="abrirModal2('modal-add-pastel')">Adicionar Pastel</li>
+        <li onclick="abrirModal2('modal-add-molho')">Adicionar Molho</li>
+        <li onclick="abrirModal2('modal-editar-logo')">Editar Logo</li>
+        <li onclick="abrirModal2('modal-vendas')">Vendas</li>
+      </ul>
+    </aside>
+
+    <!-- MODAL: ADICIONAR PASTEL -->
+    <div class="admin-modal" id="modal-add-pastel">
+      <div class="admin-modal-content">
+        <span class="fechar-modal" onclick="fecharModal2('modal-add-pastel')"
+          >&times;</span
+        >
+        <h2>Adicionar Pastel</h2>
+
+        <label>Categoria:</label>
+        <select id="pastel-categoria">
+          <option value="salgados">Salgado</option>
+          <option value="doces">Doce</option>
+          <option value="porcoes">Porção</option>
+          <option value="bebidas">Bebidas</option>
+        </select>
+
+        <label>Imagem:</label>
+        <input type="file" id="pastel-imagem" />
+
+        <label>Nome:</label>
+        <input type="text" id="pastel-nome" />
+
+        <label>Descrição:</label>
+        <textarea id="pastel-descricao"></textarea>
+
+        <label>Preço:</label>
+        <input type="number" step="0.01" id="pastel-preco" />
+
+        <button onclick="salvarPastel()">Salvar Pastel</button>
+        <p class="msg-retorno" id="msg-pastel" style="display: none"></p>
+      </div>
+    </div>
+
+    <!-- MODAL: ADICIONAR MOLHO -->
+    <div class="admin-modal" id="modal-add-molho">
+      <div class="admin-modal-content">
+        <span class="fechar-modal" onclick="fecharModal2('modal-add-molho')"
+          >&times;</span
+        >
+        <h2>Adicionar Molho</h2>
+
+        <label>Categoria:</label>
+        <select id="molho-categoria">
+          <option value="salgados">Salgado</option>
+          <option value="doces">Doce</option>
+          <option value="porcoes">Porção</option>
+        </select>
+
+        <label>Nome:</label>
+        <input type="text" id="molho-nome" />
+
+        <label>Preço (R$):</label>
+        <input type="number" step="0.01" id="molho-preco" />
+
+        <button onclick="salvarMolho()">Salvar Molho</button>
+        <p class="msg-retorno" id="msg-molho" style="display: none"></p>
+      </div>
+    </div>
+
+    <!-- MODAL: EDITAR LOGO -->
+    <div class="admin-modal" id="modal-editar-logo">
+      <div class="admin-modal-content">
+        <span class="fechar-modal" onclick="fecharModal2('modal-editar-logo')"
+          >&times;</span
+        >
+        <h2>Editar Logo</h2>
+
+        <label>Nova Imagem:</label>
+        <input type="file" id="logo-imagem" />
+
+        <button onclick="salvarLogo()">Salvar Logo</button>
+        <p class="msg-retorno" id="msg-logo" style="display: none"></p>
+      </div>
+    </div>
+
+    <!-- MODAL DE VENDAS -->
+    <div class="admin-modal" id="modal-vendas">
+      <div class="admin-modal-content">
+        <span class="fechar-modal" onclick="fecharModal2('modal-vendas')"
+          >&times;</span
+        >
+        <h2>Vendas</h2>
+        <p>Nenhuma função aqui ainda.</p>
+        <p class="msg-retorno" id="msg-vendas" style="display: none"></p>
+      </div>
+    </div>
 
     <main>
       <section id="salgados" class="categoria ativa">
@@ -72,10 +190,8 @@
               <h3>Pastel de Frango</h3>
               <div class="informacao-display">
                 <p><strong>Descrição:</strong></p>
-
                 <p class="descricao">Frango e capricho no recheio</p>
               </div>
-
               <p class="preco">R$ 7,00</p>
             </div>
             <button>Adicionar</button>
@@ -106,7 +222,6 @@
           </div>
         </div>
       </section>
-
       <section id="doces" class="categoria">
         <h2>Pasteis Doces</h2>
         <div class="grid-produtos">
@@ -127,7 +242,6 @@
           </div>
           <div class="produto">
             <img src="./images/pastel-banana.jpeg" alt="Pastel de banana" />
-
             <div class="informacoes">
               <h3>Pastel de Banana</h3>
               <div class="informacao-display">
@@ -140,7 +254,6 @@
           </div>
         </div>
       </section>
-
       <section id="bebidas" class="categoria">
         <h2>Bebidas</h2>
         <div class="grid-produtos">
@@ -162,7 +275,6 @@
           </div>
         </div>
       </section>
-
       <section id="porcoes" class="categoria">
         <h2>Porções</h2>
         <div class="grid-produtos">
@@ -170,7 +282,6 @@
             <img src="./images/batata-frita.jpeg" alt="batata-frita" />
             <div class="informacoes">
               <h3>Batata Frita</h3>
-
               <p class="preco">R$ 15,00</p>
             </div>
             <button>Adicionar</button>
@@ -186,7 +297,6 @@
         </div>
       </section>
       <div id="overlay" class="overlay"></div>
-
       <div id="modal-produto" class="modal">
         <span class="fechar" onclick="fecharModal()">&times;</span>
         <div class="modal-conteudo">
@@ -199,101 +309,16 @@
               <p><strong>Descrição:</strong></p>
               <p id="modal-descricao"></p>
             </div>
-
             <p><strong id="modal-preco"></strong></p>
-
             <label for="observacoes">Observações:</label>
             <textarea
               id="observacoes"
               placeholder="Ex: sem cebola..."
             ></textarea>
-
             <section class="molhos">
               <h2>Molhos:</h2>
-              <div class="molho-adicionar">
-                <p>
-                  <img src="./images/molho-verde.png" alt="molho Verde" />
-                  Molho Verde
-                </p>
-
-                <p class="preco preco-molho">R$ 3,00</p>
-                <button class="btn-add-molho">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    width="23"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="size-6"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M12 4.5v15m7.5-7.5h-15"
-                    />
-                  </svg>
-                </button>
-                <button class="btn-sub-molho">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    width="23"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="size-6"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M5 12h14"
-                    />
-                  </svg>
-                </button>
-              </div>
-              <div class="molho-adicionar">
-                <p>
-                  <img src="./images/molho-verde.png" alt="molho Verde" />
-                  Maionese
-                </p>
-
-                <p class="preco preco-molho">R$ 3,00</p>
-                <button class="btn-add-molho">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    width="23"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="size-6"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M12 4.5v15m7.5-7.5h-15"
-                    />
-                  </svg>
-                </button>
-                <button class="btn-sub-molho">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    width="23"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="size-6"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M5 12h14"
-                    />
-                  </svg>
-                </button>
-              </div>
+              <div class="molho-adicionar"></div>
+              <div class="molho-adicionar"></div>
             </section>
             <div class="preco-total">
               <p><strong>Preço total:</strong></p>
@@ -303,13 +328,54 @@
           </div>
         </div>
       </div>
-    </main>
 
+      <!-- ===== MODAL SECRETO DE LOGIN ===== -->
+      <div id="modal-secreto" class="modal" style="display: none">
+        <div class="modal-conteudo" style="max-width: 350px">
+          <span class="fechar" onclick="fecharModalSecreto()">&times;</span>
+          <h2>Acesso Restrito</h2>
+
+          <label for="secret-email">Email:</label>
+          <input
+            type="email"
+            id="secret-email"
+            class="input"
+            placeholder="Digite o email"
+          />
+
+          <label for="secret-senha">Senha:</label>
+          <input
+            type="password"
+            id="secret-senha"
+            class="input"
+            placeholder="Digite a senha"
+          />
+
+          <button onclick="validarAcesso()" class="btn-adicionar">
+            Entrar
+          </button>
+
+          <p
+            id="secret-erro"
+            style="color: red; margin-top: 10px; display: none"
+          >
+            Email ou senha incorretos!
+          </p>
+        </div>
+      </div>
+    </main>
     <footer>
       <p>© 2025 Lá Pastelito’s — Delivery Tá On 🍴</p>
       <p>DEV: Jhonatan Henrique dos Santos Pinheiro da Silva</p>
       <p>Contato do DEV: +55 (69) 99389-7171</p>
     </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
+    <script>
+      const supabase = window.supabase.createClient(
+        "https://fbxixhpmuzeljhfsbcmo.supabase.co",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZieGl4aHBtdXplbGpoZnNiY21vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzMjEwOTAsImV4cCI6MjA3ODg5NzA5MH0.VSRxLsh57oTh71aa9dsC3W8kXuku1cI6R3AFdNnZ1-A"
+      );
+    </script>
 
     <script src="cardapio-main.js"></script>
   </body>

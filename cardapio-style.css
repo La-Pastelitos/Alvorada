@@ -30,7 +30,14 @@ header {
   right: 8px;
   top: 8px;
 }
-
+#menu {
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  border: none;
+  background: transparent;
+  color: #fff;
+}
 .logo {
   width: 150px;
   margin-bottom: 10px;
@@ -193,7 +200,7 @@ strong {
   display: none;
   overflow: hidden;
   max-height: 90%;
-  width: 80%;
+  width: 66%;
   padding: 30px 20px 20px 20px;
   gap: 20px;
   flex-direction: column;
@@ -232,6 +239,9 @@ strong {
   flex-direction: column;
 }
 
+.modal textarea {
+  font-family: Arial, Helvetica, sans-serif;
+}
 .modal textarea,
 .modal select {
   margin: 8px 0;
@@ -261,10 +271,10 @@ strong {
 }
 .molho-adicionar img {
   width: 40px;
+  margin-right: 12px;
 }
 .molho-adicionar {
   display: flex;
-  gap: 10px;
   align-items: center;
 }
 .btn-add-molho {
@@ -281,9 +291,7 @@ strong {
 }
 .molho-adicionar button {
   border: none;
-  background-color: #949494;
-  border-radius: 50%;
-  padding: 2px 3px;
+  background: transparent;
 }
 .molho-adicionar p {
   display: flex;
@@ -302,6 +310,359 @@ strong {
   background-color: var(--vermelho);
   padding: 3px 6px;
   border-radius: 50%;
+}
+/* ==============================
+   SIDEBAR (MENU ADMIN)
+============================== */
+#sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 55%;
+  max-width: 340px;
+  height: 100vh;
+
+  background: #0d0d0d;
+  color: white;
+
+  padding: 25px;
+  z-index: 3000;
+  display: none;
+  flex-direction: column;
+
+  box-shadow: 4px 0 25px rgba(0, 0, 0, 0.6);
+
+  /* animação */
+  transform: translateX(-100%);
+  transition: 0.35s ease;
+}
+
+#sidebar.show {
+  display: flex !important;
+  transform: translateX(0);
+}
+
+#sidebar h3 {
+  color: var(--laranja);
+  font-weight: bold;
+  font-size: 22px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+#sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+/* Items do menu */
+.sidebar-options li {
+  padding: 14px;
+  margin-bottom: 12px;
+
+  background: #1b1b1b;
+  border-left: 4px solid var(--laranja);
+
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  color: white;
+
+  transition: 0.25s ease;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.sidebar-options li:hover {
+  background: var(--laranja);
+  color: #000;
+  transform: translateX(5px);
+}
+
+/* Botão de fechar */
+#close-sidebar {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 30px;
+  cursor: pointer;
+  align-self: flex-end;
+  transition: 0.25s;
+}
+
+#close-sidebar:hover {
+  color: var(--laranja);
+  transform: scale(1.2);
+}
+
+/* Overlay */
+#sidebar-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  z-index: 2000;
+  backdrop-filter: blur(2px);
+}
+
+/* ==============================
+   MODAIS
+============================== */
+
+.admin-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+
+  display: none;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 4000;
+}
+
+.admin-modal-content {
+  background: #ffffff;
+  width: 92%;
+  max-width: 420px;
+  padding: 30px;
+
+  border-radius: 14px;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.25);
+
+  animation: modalShow 0.3s ease;
+}
+
+/* animação de entrada do modal */
+@keyframes modalShow {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Título */
+.admin-modal-content h2 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  text-align: center;
+  color: var(--vermelho);
+}
+
+/* Botão de fechar modal */
+.fechar-modal {
+  float: right;
+  cursor: pointer;
+  font-size: 26px;
+  color: #555;
+  transition: 0.25s;
+}
+
+.fechar-modal:hover {
+  color: var(--vermelho);
+  transform: scale(1.15);
+}
+
+/* Inputs / Select / Textarea */
+.admin-modal-content input,
+.admin-modal-content select,
+.admin-modal-content textarea {
+  width: 100%;
+  padding: 10px 12px;
+
+  margin-bottom: 14px;
+
+  border-radius: 10px;
+  border: 2px solid #ddd;
+
+  font-size: 15px;
+
+  transition: 0.2s ease;
+  background: #fafafa;
+}
+
+/* Efeito ao focar */
+.admin-modal-content input:focus,
+.admin-modal-content select:focus,
+.admin-modal-content textarea:focus {
+  border-color: var(--laranja);
+  box-shadow: 0 0 8px rgba(255, 136, 0, 0.5);
+  outline: none;
+  background: #fff;
+}
+
+/* Botão principal */
+.admin-modal-content button {
+  width: 100%;
+  margin-top: 10px;
+  border: none;
+
+  padding: 14px;
+
+  background: var(--laranja);
+  border-radius: 10px;
+
+  font-weight: bold;
+  font-size: 16px;
+
+  cursor: pointer;
+
+  transition: 0.25s ease;
+}
+
+.admin-modal-content button:hover {
+  background: var(--vermelho);
+  color: white;
+  transform: scale(1.03);
+}
+
+/* ==============================
+   MENSAGENS (erro / sucesso)
+============================== */
+
+.msg-retorno {
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+
+  font-weight: bold;
+  text-align: center;
+  font-size: 14px;
+  display: none;
+}
+
+.msg-erro {
+  background: #ffdedf;
+  color: #a40000;
+  border: 2px solid #ff4d4d;
+}
+
+.msg-sucesso {
+  background: #d9ffd9;
+  color: #059b00;
+  border: 2px solid #11c400;
+}
+/* ===== MODAL SECRETO — OVERLAY ===== */
+#modal-secreto {
+  width: 100%;
+  height: 100%;
+  display: none; /* começa escondido */
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+}
+
+/* ===== CAIXA DO MODAL ===== */
+#modal-secreto .modal-conteudo {
+  background: #ffffff;
+  padding: 28px 30px;
+  width: 92%;
+  max-width: 380px;
+  border-radius: 18px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+  animation: aparecerModal 0.25s ease-out;
+  position: relative;
+}
+
+/* ===== ANIMAÇÃO ===== */
+@keyframes aparecerModal {
+  from {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ===== TÍTULO ===== */
+#modal-secreto .modal-conteudo h2 {
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+
+/* ===== ÍCONE DE FECHAR ===== */
+#modal-secreto .fechar {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 26px;
+  color: #444;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+#modal-secreto .fechar:hover {
+  transform: scale(1.2);
+  color: #000;
+}
+
+/* ===== CAMPOS DE TEXTO ===== */
+#modal-secreto input {
+  width: 94%;
+  padding: 12px;
+  margin-top: 8px;
+  margin-bottom: 14px;
+  border: 1.6px solid #d0d0d0;
+  border-radius: 10px;
+  font-size: 16px;
+  transition: 0.15s;
+  outline: none;
+}
+
+#modal-secreto input:focus {
+  border-color: #ffaf34;
+  box-shadow: 0 0 0 2px rgba(255, 175, 52, 0.35);
+}
+
+/* ===== BOTÃO ===== */
+#modal-secreto .btn-adicionar {
+  width: 100%;
+  padding: 12px;
+  background: #ffaf34;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+#modal-secreto .btn-adicionar:hover {
+  background: #f5a127;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(255, 175, 52, 0.4);
+}
+
+/* ===== MENSAGEM DE ERRO ===== */
+#secret-erro {
+  font-size: 14px;
+  display: none;
+  margin-top: 10px;
+  color: #d63031;
+}
+
+@media (max-width: 700px) {
+  #admin-sidebar {
+    width: 80%;
+  }
 }
 @media (prefers-color-scheme: dark) {
   :root {

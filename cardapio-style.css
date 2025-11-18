@@ -37,6 +37,7 @@ header {
   border: none;
   background: transparent;
   color: #fff;
+  display: none;
 }
 .logo {
   width: 150px;
@@ -270,8 +271,8 @@ strong {
   transform: scale(1.05);
 }
 .molho-adicionar img {
-  width: 40px;
-  margin-right: 12px;
+  width: 30px;
+  margin-right: 5px;
 }
 .molho-adicionar {
   display: flex;
@@ -432,7 +433,7 @@ strong {
 
 .admin-modal-content {
   background: #ffffff;
-  width: 92%;
+  width: 80%;
   max-width: 420px;
   padding: 30px;
 

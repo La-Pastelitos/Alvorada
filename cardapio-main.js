@@ -511,8 +511,6 @@ function liberarModoAdmin() {
   if (admin === "true") {
     // Tudo que for só para administradores deve ter a classe .btn-admin
     document.getElementById("menu").style.display = "block";
-  } else {
-    document.getElementById("menu").style.display = "none";
   }
 }
 
@@ -554,4 +552,7 @@ async function validarAcesso() {
   alert("Acesso liberado!");
 }
 
-document.addEventListener("DOMContentLoaded", updateCartCount);
+document.addEventListener("DOMContentLoaded", () => {
+  updateCartCount();
+  liberarModoAdmin();
+});

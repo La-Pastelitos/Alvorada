@@ -10,6 +10,7 @@ body {
   background-color: var(--branco);
   color: #222;
   margin: 0;
+  padding: 0;
 }
 body::-webkit-scrollbar {
   display: none;
@@ -88,7 +89,7 @@ button {
 
 .categoria {
   display: none;
-  padding: 30px 20px;
+  padding: 30px 17px;
 }
 
 .categoria.ativa {
@@ -229,7 +230,7 @@ strong {
 }
 #modal-img {
   width: 100%;
-  height: 240px;
+  height: 227px;
   border-radius: 10px;
   object-fit: cover;
 }

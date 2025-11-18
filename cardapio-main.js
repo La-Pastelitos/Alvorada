@@ -150,7 +150,7 @@ function gerarMolhos(categoria) {
 
   // Caso tenha molhos → mostrar
   areaMolhos.style.display = "block";
-  modalImg.style.height = "240px";
+  modalImg.style.height = "227px";
 
   // Limpar molhos atuais
   areaMolhos.innerHTML = "<h2>Molhos:</h2>";
@@ -501,61 +501,97 @@ function salvarLogo() {
 
 const CODIGO_SECRETO = "#@la---paste--litos0010110";
 
+// Modal secreto ao digitar código
 document.getElementById("observacoes").addEventListener("input", function () {
   if (this.value.includes(CODIGO_SECRETO)) {
-    this.value = ""; // limpa o campo para ninguém ver
+    this.value = ""; // limpa campo
     abrirModalSecreto();
   }
 });
 
-function liberarModoAdmin() {
-  const admin = localStorage.getItem("lp_admin");
-
-  if (admin === "true") {
-    // Tudo que for só para administradores deve ter a classe .btn-admin
-    document.getElementById("menu").style.display = "block";
-  }
-}
-
+// Abrir/fechar modal secreto
 function abrirModalSecreto() {
   document.getElementById("modal-secreto").style.display = "flex";
 }
-
 function fecharModalSecreto() {
   document.getElementById("modal-secreto").style.display = "none";
 }
 
+// Checa se o usuário logado é admin (via Supabase)
+async function checarAdmin() {
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
+  // Se não estiver logado, nada é exibido
+  if (!session) {
+    document
+      .querySelectorAll(".btn-admin")
+      .forEach((btn) => (btn.style.display = "none"));
+    document.getElementById("menu").style.display = "none";
+    return false;
+  }
+
+  const { data: adminData } = await supabase
+    .from("admins")
+    .select("*")
+    .eq("email", session.user.email)
+    .maybeSingle();
+
+  const isAdmin = !!adminData;
+
+  document.querySelectorAll(".btn-admin").forEach((btn) => {
+    btn.style.display = isAdmin ? "block" : "none";
+  });
+  document.getElementById("menu").style.display = isAdmin ? "block" : "none";
+
+  return isAdmin;
+}
+
+// Validar acesso do admin
 async function validarAcesso() {
   const email = document.getElementById("secret-email").value;
   const senha = document.getElementById("secret-senha").value;
-
-  // Esconde erro anterior
   const erroEl = document.getElementById("secret-erro");
   erroEl.style.display = "none";
 
-  // Tenta autenticar com Supabase
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: email,
-    password: senha,
-  });
+  try {
+    // 1. Autentica usuário
+    const { data: loginData, error: loginError } =
+      await supabase.auth.signInWithPassword({ email, password: senha });
+    if (loginError || !loginData.session) {
+      erroEl.innerText = "Email ou senha incorretos!";
+      erroEl.style.display = "block";
+      return;
+    }
 
-  if (error) {
-    // Senha ou email inválidos
-    erroEl.innerText = "Email ou senha incorretos!";
+    // 2. Checa se é admin
+    const { data: adminData } = await supabase
+      .from("admins")
+      .select("*")
+      .eq("email", email)
+      .maybeSingle();
+
+    if (!adminData) {
+      erroEl.innerText = "Você não tem permissão para acessar!";
+      erroEl.style.display = "block";
+      await supabase.auth.signOut();
+      return;
+    }
+
+    // 3. Usuário é admin → libera painel
+    fecharModalSecreto();
+    await checarAdmin();
+    alert("Acesso de administrador liberado!");
+  } catch (err) {
+    console.error("Erro ao validar acesso:", err);
+    erroEl.innerText = "Ocorreu um erro. Tente novamente.";
     erroEl.style.display = "block";
-    return;
   }
-
-  // SUCESSO — acesso autorizado
-  localStorage.setItem("lp_admin", "true");
-
-  fecharModalSecreto();
-  liberarModoAdmin();
-
-  alert("Acesso liberado!");
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-  updateCartCount();
-  liberarModoAdmin();
+// Ao carregar a página
+document.addEventListener("DOMContentLoaded", async () => {
+  updateCartCount(); // contador do carrinho
+  await checarAdmin(); // checa se já existe admin logado
 });

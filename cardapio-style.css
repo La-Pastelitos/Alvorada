@@ -47,7 +47,7 @@ header {
 nav {
   display: flex;
   flex-wrap: nowrap;
-  gap: 8px;
+  gap: 7px;
   width: auto;
   overflow-x: auto;
   white-space: nowrap;
@@ -201,7 +201,7 @@ strong {
   display: none;
   overflow: hidden;
   max-height: 90%;
-  width: 66%;
+  width: 72%;
   padding: 30px 20px 20px 20px;
   gap: 20px;
   flex-direction: column;
@@ -253,7 +253,7 @@ strong {
 }
 
 .fechar {
-  position: absolute;
+  position: fixed;
   top: 5px;
   right: 13px;
   font-size: 28px;
@@ -434,7 +434,7 @@ strong {
 .admin-modal-content {
   background: #ffffff;
   width: 80%;
-  max-width: 420px;
+  max-width: 400px;
   padding: 30px;
 
   border-radius: 14px;
@@ -481,10 +481,11 @@ strong {
 .admin-modal-content input,
 .admin-modal-content select,
 .admin-modal-content textarea {
-  width: 100%;
+  width: 93%;
   padding: 10px 12px;
 
   margin-bottom: 14px;
+  margin-left: 0;
 
   border-radius: 10px;
   border: 2px solid #ddd;
@@ -572,7 +573,7 @@ strong {
 #modal-secreto .modal-conteudo {
   background: #ffffff;
   padding: 28px 30px;
-  width: 92%;
+  width: 90%;
   max-width: 380px;
   border-radius: 18px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
@@ -676,7 +677,7 @@ strong {
     justify-content: center;
   }
   .produto {
-    width: 65vw;
+    width: 70vw;
     gap: 30px;
   }
   nav {
@@ -743,8 +744,8 @@ strong {
     width: 100%;
   }
   .produto img {
-    width: 90px;
-    height: 90px;
+    width: 100px;
+    height: 100px;
   }
   #modal-img {
     height: 180px;

@@ -76,7 +76,7 @@ const molhosPorCategoria = {
   ],
 
   doces: [
-    { nome: "Calda de Chocolate", preco: 3, img: "./images/nuttela.jpeg" },
+    { nome: "Calda de Choc.", preco: 3, img: "./images/nuttela.jpeg" },
     { nome: "Nutella", preco: 4, img: "./images/nuttela.jpeg" },
   ],
 };
@@ -143,11 +143,14 @@ function gerarMolhos(categoria) {
   // Se a categoria não tiver molhos → esconder tudo
   if (!molhosPorCategoria[categoria]) {
     areaMolhos.style.display = "none";
+    modalImg.style.height = "340px";
+
     return;
   }
 
   // Caso tenha molhos → mostrar
   areaMolhos.style.display = "block";
+  modalImg.style.height = "240px";
 
   // Limpar molhos atuais
   areaMolhos.innerHTML = "<h2>Molhos:</h2>";

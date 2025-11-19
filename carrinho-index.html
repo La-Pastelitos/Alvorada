@@ -9,6 +9,23 @@
   </head>
   <body>
     <header>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        width="23"
+        class="size-6"
+        id="voltar"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18"
+        />
+      </svg>
+
       <img
         src="./images/Logo-La-Pastelitos-sem-fundo.png"
         alt="logo"
@@ -54,7 +71,7 @@
           <label>Rua</label>
           <input id="input-rua" type="text" />
           <div class="form-row">
-            <input id="input-numero" type="text" placeholder="Número" />
+            <input id="input-numero" type="number" placeholder="Número" />
             <input
               id="input-complemento"
               type="text"
@@ -64,7 +81,7 @@
           <label>Nome</label>
           <input id="input-nome" type="text" />
           <label>Telefone (WhatsApp)</label>
-          <input id="input-telefone" type="text" placeholder="(69)..." />
+          <input id="input-telefone" type="number" placeholder="(69)..." />
           <label>Forma de pagamento</label>
           <select id="input-pagamento">
             <option value="Pix">Pix</option>

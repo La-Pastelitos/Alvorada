@@ -18,6 +18,10 @@ function calcularTotal(cart) {
   );
 }
 
+document.getElementById("voltar").addEventListener("click", () => {
+  window.location.href = "index.html";
+});
+
 const container = document.getElementById("carrinho-conteudo");
 const textoTotal = document.getElementById("texto-total");
 

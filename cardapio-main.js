@@ -62,6 +62,7 @@ const btnAdicionar = document.getElementById("btn-adicionar");
 let precoPastel = 0;
 let totalProduto = 0;
 let molhosSelecionados = {};
+let isAdmin = false;
 
 const molhosPorCategoria = {
   salgados: [
@@ -389,56 +390,312 @@ function limparErro(campo) {
    SALVAR PASTEL
 =========================== */
 
-function salvarPastel() {
-  const categoria = document.getElementById("pastel-categoria");
-  const imagem = document.getElementById("pastel-imagem");
-  const nome = document.getElementById("pastel-nome");
-  const descricao = document.getElementById("pastel-descricao");
-  const preco = document.getElementById("pastel-preco");
+async function salvarPastel() {
+  try {
+    const bucket = "pastelaria"; // <- ajuste aqui se seu bucket tiver outro nome
+    if (!window.supabase) {
+      console.error("Supabase client não encontrado (window.supabase).");
+      mostrarMensagem("msg-pastel", "Erro: supabase não inicializado.", "erro");
+      return;
+    }
 
-  let erro = false;
+    const categoria = document.getElementById("pastel-categoria").value;
+    const imagemInput = document.getElementById("pastel-imagem");
+    const nome = document.getElementById("pastel-nome").value.trim();
+    const descricao = document.getElementById("pastel-descricao").value.trim();
+    const preco = parseFloat(document.getElementById("pastel-preco").value);
 
-  limparErro(categoria);
-  limparErro(imagem);
-  limparErro(nome);
-  limparErro(descricao);
-  limparErro(preco);
+    // Validações
+    if (
+      !categoria ||
+      !imagemInput ||
+      !imagemInput.files ||
+      !imagemInput.files.length ||
+      !nome ||
+      !preco ||
+      preco <= 0
+    ) {
+      mostrarMensagem(
+        "msg-pastel",
+        "Preencha todos os campos corretamente!",
+        "erro"
+      );
+      return;
+    }
 
-  if (categoria.value === "") {
-    marcarErro(categoria);
-    erro = true;
-  }
-  if (imagem.files.length === 0) {
-    marcarErro(imagem);
-    erro = true;
-  }
-  if (nome.value.trim() === "") {
-    marcarErro(nome);
-    erro = true;
-  }
+    const file = imagemInput.files[0];
+    if (!file) {
+      mostrarMensagem("msg-pastel", "Selecione uma imagem válida!", "erro");
+      return;
+    }
 
-  if (preco.value === "" || preco.value <= 0) {
-    marcarErro(preco);
-    erro = true;
-  }
+    // gerar fileName sem caracteres estranhos
+    const safeName = file.name.replace(/\s+/g, "_");
+    const fileName = `${Date.now()}_${safeName}`;
 
-  if (erro)
-    return mostrarMensagem(
-      "msg-pastel",
-      "Preencha todos os campos corretamente!",
-      "erro"
+    console.log("Iniciando upload:", { bucket, fileName, file });
+
+    // Upload
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from(bucket)
+      .upload(fileName, file, { cacheControl: "3600", upsert: false });
+
+    if (uploadError) {
+      console.error("Erro no upload:", uploadError);
+      mostrarMensagem("msg-pastel", "Erro ao enviar imagem! (upload)", "erro");
+      return;
+    }
+
+    console.log("Upload OK:", uploadData);
+
+    // Obter URL pública (para bucket público)
+    const getUrlRes = supabase.storage.from(bucket).getPublicUrl(fileName);
+    // getPublicUrl pode retornar em formatos diferentes dependendo da versão
+    const publicUrl =
+      (getUrlRes &&
+        (getUrlRes.publicUrl ||
+          (getUrlRes.data && getUrlRes.data.publicUrl))) ||
+      (getUrlRes && getUrlRes.data && getUrlRes.data.public_url) ||
+      null;
+
+    console.log(
+      "getPublicUrl response:",
+      getUrlRes,
+      " -> publicUrl:",
+      publicUrl
     );
 
-  mostrarMensagem("msg-pastel", "Pastel salvo com sucesso!", "sucesso");
+    if (!publicUrl) {
+      mostrarMensagem("msg-pastel", "Erro ao obter URL da imagem!", "erro");
+      return;
+    }
 
-  setTimeout(() => {
+    // Inserir no banco com returning para receber o objeto inserido
+    const { data, error } = await supabase.from("pasteis").insert(
+      [
+        {
+          nome,
+          descricao,
+          preco,
+          categoria,
+          imagem_url: publicUrl,
+        },
+      ],
+      { returning: "representation" }
+    );
+
+    if (error) {
+      console.error("Erro ao inserir na tabela 'pasteis':", error);
+      mostrarMensagem("msg-pastel", "Erro ao salvar pastel no banco!", "erro");
+      return;
+    }
+
+    if (!data || !data[0]) {
+      console.warn("Insert não retornou dados (data null ou vazio):", data);
+      mostrarMensagem(
+        "msg-pastel",
+        "Pastel salvo, mas resposta inesperada do servidor.",
+        "sucesso"
+      );
+      fecharModal2("modal-add-pastel");
+      await carregarPasteis();
+      return;
+    }
+
+    console.log("Insert OK:", data[0]);
+
+    mostrarMensagem("msg-pastel", "Pastel salvo com sucesso!", "sucesso");
+
+    // Atualizar DOM sem recarregar
+    adicionarProdutoNoDOM(data[0]);
+
+    // limpar formulário
+    document.getElementById("pastel-nome").value = "";
+    document.getElementById("pastel-descricao").value = "";
+    document.getElementById("pastel-preco").value = "";
+    document.getElementById("pastel-imagem").value = "";
+
     fecharModal2("modal-add-pastel");
-  }, 1500);
+  } catch (err) {
+    console.error("Erro inesperado em salvarPastel:", err);
+    mostrarMensagem("msg-pastel", "Erro inesperado. Veja console.", "erro");
+  }
 }
 
 /* ===========================
-   SALVAR MOLHO
-=========================== */
+    EDITAR PASTEL
+  =========================== */
+
+function adicionarProdutoNoDOM(pastel) {
+  const container = document.querySelector(
+    `#${pastel.categoria} .grid-produtos`
+  );
+  if (!container) return;
+
+  const produtoHTML = `
+    <div class="produto">
+      <img src="${pastel.imagem_url}" alt="${pastel.nome}" />
+      <div class="informacoes">
+        <h3>${pastel.nome}</h3>
+        <div class="informacao-display">
+          <p><strong>Descrição:</strong></p>
+          <p class="descricao">${pastel.descricao}</p>
+        </div>
+        <p class="preco">R$ ${pastel.preco.toFixed(2)}</p>
+      </div>
+
+      <button class="btn-add-pastel">Adicionar</button>
+
+      <div class="actions-admin" style="display: none;">
+        <button ">Editar</button>
+        <button ">Excluir</button>
+      </div>
+    </div>
+  `;
+  const card = document.createElement("div");
+  card.classList.add("produto-card");
+  card.innerHTML = produtoHTML;
+
+  container.appendChild(card);
+
+  const novoProdutoBtn = card.querySelector(".btn-add-pastel");
+  novoProdutoBtn.addEventListener("click", () => abrirModalProduto(card));
+
+  if (isAdmin) {
+    card.querySelector(".actions-admin").style.display = "flex";
+  }
+
+  const btnEditar = card.querySelector(".actions-admin button:first-child");
+  const btnExcluir = card.querySelector(".actions-admin button:last-child");
+
+  btnEditar.addEventListener("click", () => editarPastel(pastel.id));
+  btnExcluir.addEventListener("click", () => excluirPastel(pastel.id));
+}
+
+async function editarPastel(id) {
+  // Buscar os dados atuais
+  const { data, error } = await supabase
+    .from("pasteis")
+    .select("*")
+    .eq("id", id)
+    .maybeSingle();
+
+  if (error || !data) {
+    alert("Erro ao carregar pastel!");
+    console.error(error);
+    return;
+  }
+
+  // Preencher modal de edição
+  document.getElementById("edit-id").value = data.id;
+  document.getElementById("edit-nome").value = data.nome;
+  document.getElementById("edit-descricao").value = data.descricao;
+  document.getElementById("edit-preco").value = data.preco;
+  document.getElementById("edit-categoria").value = data.categoria;
+  document.getElementById("edit-imagem-preview").src = data.imagem_url;
+  document.getElementById("modal-edit-pastel").style.display = "flex";
+}
+
+async function salvarEdicaoPastel() {
+  if (!isAdmin) {
+    alert("Apenas administradores podem editar pastéis!");
+    return;
+  }
+
+  const id = document.getElementById("edit-id").value;
+  const nome = document.getElementById("edit-nome").value.trim();
+  const descricao = document.getElementById("edit-descricao").value.trim();
+  const preco = parseFloat(document.getElementById("edit-preco").value);
+  const categoria = document.getElementById("edit-categoria").value;
+
+  if (!nome || !descricao || !preco || preco <= 0) {
+    alert("Preencha todos os campos!");
+    return;
+  }
+
+  const { error } = await supabase
+    .from("pasteis")
+    .update({ nome, descricao, preco, categoria })
+    .eq("id", id);
+
+  if (error) {
+    alert("Erro ao atualizar pastel!");
+    console.error(error);
+    return;
+  }
+
+  alert("Pastel atualizado!");
+  fecharModal2("modal-edit-pastel");
+
+  // Atualiza a lista
+  document
+    .querySelectorAll(".grid-produtos")
+    .forEach((c) => (c.innerHTML = ""));
+  carregarPasteis();
+}
+
+/* ===========================
+    EXCLUIR PASTEL
+  =========================== */
+
+async function excluirPastel(id) {
+  if (!confirm("Tem certeza que deseja excluir este pastel?")) return;
+
+  const { error } = await supabase.from("pasteis").delete().eq("id", id);
+
+  if (error) {
+    alert("Erro ao excluir pastel!");
+    console.error(error);
+    return;
+  }
+
+  alert("Pastel removido!");
+
+  // Atualiza a lista
+  document
+    .querySelectorAll(".grid-produtos")
+    .forEach((c) => (c.innerHTML = ""));
+  carregarPasteis();
+}
+
+async function carregarPasteis() {
+  const { data, error } = await supabase.from("pasteis").select("*");
+
+  if (error) {
+    console.error("Erro ao carregar pasteis:", error);
+    return;
+  }
+
+  // Montar no DOM
+  data.forEach((p) => adicionarProdutoNoDOM(p));
+}
+
+// Função para abrir o modal do produto recém-adicionado
+function abrirModalProduto(produto) {
+  const img = produto.querySelector("img").src;
+  const nome = produto.querySelector("h3").innerText;
+  const descricao = produto.querySelector(".descricao").innerText;
+  const preco = produto.querySelector(".preco").innerText;
+
+  modalImg.src = img;
+  modalTitulo.innerText = nome;
+  modalDescricao.innerText = descricao;
+  modalPreco.innerText = preco;
+
+  modalObservacoes.value = "";
+  totalProduto = parseFloat(preco.replace("R$", "").replace(",", "."));
+  precoPastel = totalProduto;
+  atualizarPrecoNoModal();
+  modal.style.display = "flex";
+  overlay.style.display = "block";
+
+  const categoria = produto.closest(".categoria").id;
+  gerarMolhos(categoria);
+}
+
+/* ===========================
+    SALVAR MOLHO
+  =========================== */
 
 function salvarMolho() {
   const categoria = document.getElementById("molho-categoria");
@@ -475,8 +732,8 @@ function salvarMolho() {
 }
 
 /* ===========================
-   SALVAR LOGO
-=========================== */
+    SALVAR LOGO
+  =========================== */
 
 function salvarLogo() {
   const imagem = document.getElementById("logo-imagem");
@@ -496,35 +753,50 @@ function salvarLogo() {
 }
 
 /* ===========================
-   INICIALIZAÇÃO
-=========================== */
+    INICIALIZAÇÃO
+  =========================== */
 
 const CODIGO_SECRETO = "#@la---paste--litos0010110";
 
-// Modal secreto ao digitar código
-document.getElementById("observacoes").addEventListener("input", function () {
-  if (this.value.includes(CODIGO_SECRETO)) {
-    this.value = ""; // limpa campo
-    abrirModalSecreto();
+// ----------------------
+// MOSTRAR MODAL SECRETO
+// ----------------------
+document.addEventListener("DOMContentLoaded", () => {
+  const observacoes = document.getElementById("observacoes");
+  if (observacoes) {
+    observacoes.addEventListener("input", function () {
+      if (this.value.includes(CODIGO_SECRETO)) {
+        this.value = "";
+        abrirModalSecreto();
+      }
+    });
   }
+
+  updateCartCount();
+  checarAdmin(); // Checa se já existe sessão de admin
 });
 
-// Abrir/fechar modal secreto
+// ----------------------
+// ABRIR / FECHAR MODAL
+// ----------------------
 function abrirModalSecreto() {
   document.getElementById("modal-secreto").style.display = "flex";
 }
+
 function fecharModalSecreto() {
   document.getElementById("modal-secreto").style.display = "none";
 }
 
-// Checa se o usuário logado é admin (via Supabase)
+// ----------------------
+// CHECAR ADMIN
+// ----------------------
 async function checarAdmin() {
   const {
     data: { session },
   } = await supabase.auth.getSession();
 
-  // Se não estiver logado, nada é exibido
   if (!session) {
+    isAdmin = false;
     document
       .querySelectorAll(".btn-admin")
       .forEach((btn) => (btn.style.display = "none"));
@@ -538,7 +810,7 @@ async function checarAdmin() {
     .eq("email", session.user.email)
     .maybeSingle();
 
-  const isAdmin = !!adminData;
+  isAdmin = !!adminData; // ← agora salva globalmente
 
   document.querySelectorAll(".btn-admin").forEach((btn) => {
     btn.style.display = isAdmin ? "block" : "none";
@@ -548,24 +820,36 @@ async function checarAdmin() {
   return isAdmin;
 }
 
-// Validar acesso do admin
+// ----------------------
+// VALIDAR ACESSO DO ADMIN
+// ----------------------
 async function validarAcesso() {
-  const email = document.getElementById("secret-email").value;
-  const senha = document.getElementById("secret-senha").value;
+  const email = document.getElementById("secret-email").value.trim();
+  const senha = document.getElementById("secret-senha").value.trim();
   const erroEl = document.getElementById("secret-erro");
   erroEl.style.display = "none";
 
+  if (!email || !senha) {
+    erroEl.innerText = "Preencha email e senha!";
+    erroEl.style.display = "block";
+    return;
+  }
+
   try {
-    // 1. Autentica usuário
+    // Autenticação no Supabase
     const { data: loginData, error: loginError } =
-      await supabase.auth.signInWithPassword({ email, password: senha });
+      await supabase.auth.signInWithPassword({
+        email,
+        password: senha,
+      });
+
     if (loginError || !loginData.session) {
       erroEl.innerText = "Email ou senha incorretos!";
       erroEl.style.display = "block";
       return;
     }
 
-    // 2. Checa se é admin
+    // Verifica se o email é admin
     const { data: adminData } = await supabase
       .from("admins")
       .select("*")
@@ -579,7 +863,7 @@ async function validarAcesso() {
       return;
     }
 
-    // 3. Usuário é admin → libera painel
+    // Usuário é admin → liberar painel
     fecharModalSecreto();
     await checarAdmin();
     alert("Acesso de administrador liberado!");
@@ -590,8 +874,21 @@ async function validarAcesso() {
   }
 }
 
+// ----------------------
+// LOGOUT ADMIN
+// ----------------------
+async function logoutAdmin() {
+  await supabase.auth.signOut();
+  document
+    .querySelectorAll(".btn-admin")
+    .forEach((btn) => (btn.style.display = "none"));
+  document.getElementById("menu").style.display = "none";
+  alert("Você saiu do modo administrador.");
+}
+
 // Ao carregar a página
 document.addEventListener("DOMContentLoaded", async () => {
   updateCartCount(); // contador do carrinho
   await checarAdmin(); // checa se já existe admin logado
+  await carregarPasteis(); // carrega todos os pasteis do banco
 });

@@ -109,7 +109,7 @@
         <label>Preço:</label>
         <input type="number" step="0.01" id="pastel-preco" />
 
-        <button onclick="salvarPastel()">Salvar Pastel</button>
+        <button onclick="salvarPastel()">Salvar</button>
         <p class="msg-retorno" id="msg-pastel" style="display: none"></p>
       </div>
     </div>
@@ -171,130 +171,19 @@
     <main>
       <section id="salgados" class="categoria ativa">
         <h2>Pasteis Salgados</h2>
-        <div class="grid-produtos">
-          <div class="produto">
-            <img src="./images/pastel-carne.jpeg" alt="Pastel de carne" />
-            <div class="informacoes">
-              <h3>Pastel de Carne</h3>
-              <div class="informacao-display">
-                <p><strong>Descrição:</strong></p>
-                <p class="descricao">Carne moída e molho extraordinário</p>
-              </div>
-              <p class="preco">R$ 7,00</p>
-            </div>
-            <button>Adicionar</button>
-          </div>
-          <div class="produto">
-            <img src="./images/pastel-frango.jpeg" alt="Pastel de frango" />
-            <div class="informacoes">
-              <h3>Pastel de Frango</h3>
-              <div class="informacao-display">
-                <p><strong>Descrição:</strong></p>
-                <p class="descricao">Frango e capricho no recheio</p>
-              </div>
-              <p class="preco">R$ 7,00</p>
-            </div>
-            <button>Adicionar</button>
-          </div>
-          <div class="produto">
-            <img src="./images/pastel-carne.jpeg" alt="Pastel de carne" />
-            <div class="informacoes">
-              <h3>Pastel de Carne</h3>
-              <div class="informacao-display">
-                <p><strong>Descrição:</strong></p>
-                <p class="descricao">Carne moída e molho extraordinário</p>
-              </div>
-              <p class="preco">R$ 7,00</p>
-            </div>
-            <button>Adicionar</button>
-          </div>
-          <div class="produto">
-            <img src="./images/pastel-frango.jpeg" alt="Pastel de frango" />
-            <div class="informacoes">
-              <h3>Pastel de Frango</h3>
-              <div class="informacao-display">
-                <p><strong>Descrição: </strong></p>
-                <p class="descricao">Frango e capricho no recheio</p>
-              </div>
-              <p class="preco">R$ 7,00</p>
-            </div>
-            <button>Adicionar</button>
-          </div>
-        </div>
+        <div class="grid-produtos"></div>
       </section>
       <section id="doces" class="categoria">
         <h2>Pasteis Doces</h2>
-        <div class="grid-produtos">
-          <div class="produto">
-            <img
-              src="./images/pastel-brigadeiro.jpg"
-              alt="Pastel de chocolate"
-            />
-            <div class="informacoes">
-              <h3>Pastel de Chocolate</h3>
-              <div class="informacao-display">
-                <p><strong>Descrição:</strong></p>
-                <p class="descricao">chocolate com morango</p>
-              </div>
-              <p class="preco">R$ 8,00</p>
-            </div>
-            <button>Adicionar</button>
-          </div>
-          <div class="produto">
-            <img src="./images/pastel-banana.jpeg" alt="Pastel de banana" />
-            <div class="informacoes">
-              <h3>Pastel de Banana</h3>
-              <div class="informacao-display">
-                <p><strong>Descrição:</strong></p>
-                <p class="descricao">nutella e banana</p>
-              </div>
-              <p class="preco">R$ 8,00</p>
-            </div>
-            <button>Adicionar</button>
-          </div>
-        </div>
+        <div class="grid-produtos"></div>
       </section>
       <section id="bebidas" class="categoria">
         <h2>Bebidas</h2>
-        <div class="grid-produtos">
-          <div class="produto">
-            <img src="./images/coca-cola.jpeg" alt="Coca cola" />
-            <div class="informacoes">
-              <h3>Coca-Cola 2L</h3>
-              <p class="preco">R$ 5,00</p>
-            </div>
-            <button>Adicionar</button>
-          </div>
-          <div class="produto">
-            <img src="./images/suco-laranja.jpeg" alt="Suco de Laranja" />
-            <div class="informacoes">
-              <h3>Suco Natural de Laranja 1L</h3>
-              <p class="preco">R$ 6,00</p>
-            </div>
-            <button>Adicionar</button>
-          </div>
-        </div>
+        <div class="grid-produtos"></div>
       </section>
       <section id="porcoes" class="categoria">
         <h2>Porções</h2>
-        <div class="grid-produtos">
-          <div class="produto">
-            <img src="./images/batata-frita.jpeg" alt="batata-frita" />
-            <div class="informacoes">
-              <h3>Batata Frita</h3>
-              <p class="preco">R$ 15,00</p>
-            </div>
-            <button>Adicionar</button>
-          </div>
-          <div class="produto">
-            <img src="./images/mandioca frita.jpeg" alt="Mandioca-frita" />
-            <div class="informacoes">
-              <h3>Mandioca Frita</h3>
-              <p class="preco">R$ 14,00</p>
-            </div>
-            <button>Adicionar</button>
-          </div>
-        </div>
+        <div class="grid-produtos"></div>
       </section>
       <div id="overlay" class="overlay"></div>
       <div id="modal-produto" class="modal">
@@ -326,6 +215,45 @@
             </div>
             <button id="btn-adicionar">Adicionar ao Pedido</button>
           </div>
+        </div>
+      </div>
+      <!-- MODAL: EDITAR PASTEL -->
+      <!-- ========== MODAL EDITAR PASTEL ========== -->
+      <div id="modal-edit-pastel" class="admin-modal">
+        <div class="modal-edit admin-modal-content">
+          <span class="fechar-modal" onclick="fecharModal2('modal-edit-pastel')"
+            >&times;</span
+          >
+          <h2>Editar Pastel</h2>
+
+          <input type="hidden" id="edit-id" />
+
+          <label>Nome:</label>
+          <input id="edit-nome" type="text" />
+
+          <label>Descrição:</label>
+          <textarea id="edit-descricao"></textarea>
+
+          <label>Preço:</label>
+          <input id="edit-preco" type="number" step="0.01" />
+
+          <label>Categoria:</label>
+          <select id="edit-categoria">
+            <option value="salgados">Salgados</option>
+            <option value="doces">Doces</option>
+            <option value="bebidas">Bebidas</option>
+            <option value="porcoes">Porções</option>
+          </select>
+
+          <label>Imagem atual:</label>
+          <img
+            id="edit-imagem-preview"
+            style="width: 150px; border-radius: 10px; margin-bottom: 10px"
+          />
+
+          <button onclick="salvarEdicaoPastel()" class="btn-adicionar">
+            Salvar Alterações
+          </button>
         </div>
       </div>
 

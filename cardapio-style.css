@@ -461,6 +461,16 @@ strong {
   box-shadow: 0 0 25px rgba(0, 0, 0, 0.25);
 
   animation: modalShow 0.3s ease;
+  height: 87%;
+
+  overflow-y: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: hidden;
+  flex-wrap: nowrap;
+}
+.admin-modal::-webkit-scrollbar {
+  display: none;
 }
 
 /* animação de entrada do modal */

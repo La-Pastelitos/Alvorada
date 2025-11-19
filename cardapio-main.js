@@ -527,11 +527,9 @@ async function salvarPastel() {
   =========================== */
 
 function adicionarProdutoNoDOM(pastel) {
-  const container = document.querySelector(
-    `#${pastel.categoria} .grid-produtos`
-  );
+  const categoria = pastel.categoria || "salgados"; // categoria padrão
+  const container = document.querySelector(`#${categoria} .grid-produtos`);
   if (!container) return;
-
   const produtoHTML = `
     <div class="produto">
       <img src="${pastel.imagem_url}" alt="${pastel.nome}" />

@@ -118,8 +118,29 @@ h2 {
   box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
   padding: 7px 11px;
   transition: transform 0.2s;
-  overflow: hidden;
   margin: 0;
+}
+
+.actions-admin {
+  position: absolute;
+  right: 11px;
+  bottom: 7px;
+  display: flex;
+  gap: 7px;
+}
+.actions-admin button:first-child {
+  background: #3498db;
+  color: #fff;
+}
+.actions-admin button:first-child {
+  background: #2980b9;
+}
+.actions-admin button:last-child {
+  background: #e74c3c;
+  color: #fff;
+}
+.actions-admin button:last-child:hover {
+  background: #c0392b;
 }
 
 .produto img {
@@ -172,7 +193,7 @@ footer {
     transform: translateX(0);
   }
 }
-.produto button:hover {
+.btn-add-pastel:hover {
   background: linear-gradient(180deg, var(--laranja), var(--vermelho));
 }
 strong {

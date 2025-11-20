@@ -62,25 +62,9 @@ const btnAdicionar = document.getElementById("btn-adicionar");
 let precoPastel = 0;
 let totalProduto = 0;
 let molhosSelecionados = {};
+let molhosPorCategoria = {};
 let isAdmin = false;
-
-const molhosPorCategoria = {
-  salgados: [
-    { nome: "Molho Verde", preco: 3, img: "./images/molho-verde.png" },
-    { nome: "Maionese", preco: 3, img: "./images/molho-verde.png" },
-  ],
-
-  // porções usam os mesmos molhos dos pasteis salgados
-  porcoes: [
-    { nome: "Molho Verde", preco: 3, img: "./images/molho-verde.png" },
-    { nome: "Maionese", preco: 3, img: "./images/molho-verde.png" },
-  ],
-
-  doces: [
-    { nome: "Calda de Choc.", preco: 3, img: "./images/nuttela.jpeg" },
-    { nome: "Nutella", preco: 4, img: "./images/nuttela.jpeg" },
-  ],
-};
+let categoriaAtualModal = null;
 
 document.querySelectorAll(".produto").forEach((produto) => {
   const btn = produto.querySelector("button");
@@ -106,6 +90,7 @@ document.querySelectorAll(".produto").forEach((produto) => {
     atualizarPrecoNoModal();
 
     const section = produto.closest(".categoria").id;
+    categoriaAtualModal = section;
     gerarMolhos(section);
 
     modal.style.display = "flex";
@@ -116,6 +101,8 @@ document.querySelectorAll(".produto").forEach((produto) => {
 function fecharModal() {
   modal.style.display = "none";
   overlay.style.display = "none";
+
+  molhosSelecionados = {};
 }
 overlay.addEventListener("click", fecharModal);
 
@@ -139,134 +126,145 @@ document.querySelectorAll(".btn-add-molho").forEach((botao) => {
 
 function gerarMolhos(categoria) {
   const areaMolhos = document.querySelector(".molhos");
-  const listaMolhoHTML = areaMolhos.querySelectorAll(".molho-adicionar");
+  areaMolhos.innerHTML = "<h2>Molhos adicinais:</h2>";
 
-  // Se a categoria não tiver molhos → esconder tudo
-  if (!molhosPorCategoria[categoria]) {
+  if (
+    !molhosPorCategoria[categoria] ||
+    molhosPorCategoria[categoria].length === 0
+  ) {
     areaMolhos.style.display = "none";
     modalImg.style.height = "340px";
-
     return;
   }
 
-  // Caso tenha molhos → mostrar
   areaMolhos.style.display = "block";
   modalImg.style.height = "227px";
 
-  // Limpar molhos atuais
-  areaMolhos.innerHTML = "<h2>Molhos:</h2>";
-
-  // Inserir molhos daquela categoria
   molhosPorCategoria[categoria].forEach((molho) => {
     const bloco = document.createElement("div");
     bloco.classList.add("molho-adicionar");
 
+    // Quantidade atual
+    const qtdMolho = molhosSelecionados[molho.nome] || 0;
+
     bloco.innerHTML = `
-      <p><img src="${molho.img}" alt="${molho.nome}" /> ${molho.nome}</p>
+      <p class="molhinho">
+        <img src="${molho.img}" alt="${molho.nome}" />
+        ${molho.nome}
+                <span class="quantidade"></span>
+      </p>
       <p class="preco preco-molho">R$ ${molho.preco
         .toFixed(2)
         .replace(".", ",")}</p>
-      <button class="btn-add-molho"><svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    width="20"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="size-6"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M12 4.5v15m7.5-7.5h-15"
-                    />
-                  </svg></button>
-      <button class="btn-sub-molho"> <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    width="20"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="size-6"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M5 12h14"
-                    />
-                  </svg></button>
+
+    ${`
+  ${
+    isAdmin
+      ? `<button class="btn-del-molho" data-id="${molho.id}"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" width="16" stroke-width="1.5" stroke="currentColor" class="size-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
+</svg></button>`
+      : ""
+  }
+      <button class="btn-add-molho"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" width="14"stroke-width="1.5" stroke="currentColor" class="size-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+</svg>
+</button>
+      <button class="btn-sub-molho" style="display:none"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" width="14" stroke-width="1.5" stroke="currentColor" class="size-6">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14" />
+</svg>
+</button>
+`}
+
+
     `;
 
     areaMolhos.appendChild(bloco);
   });
 
-  // Reativar eventos dos botões
   registrarEventosMolhos();
 }
 
 function registrarEventosMolhos() {
-  document.querySelectorAll(".btn-add-molho").forEach((botao) => {
-    botao.onclick = () => {
-      const container = botao.parentElement;
-      const nomeMolho = container.querySelector("p").innerText.trim();
-      const precoMolho = parseFloat(
-        container
+  document.querySelectorAll(".btn-add-molho").forEach((btn) => {
+    btn.onclick = () => {
+      const bloco = btn.parentElement;
+      const nome = bloco.querySelector("p").innerText.split("x")[0].trim();
+      const preco = parseFloat(
+        bloco
           .querySelector(".preco-molho")
           .innerText.replace("R$", "")
           .replace(",", ".")
       );
 
-      totalProduto += precoMolho;
-      molhosSelecionados[nomeMolho] = (molhosSelecionados[nomeMolho] || 0) + 1;
+      molhosSelecionados[nome] = (molhosSelecionados[nome] || 0) + 1;
+      bloco.querySelector(
+        ".quantidade"
+      ).innerText = `x${molhosSelecionados[nome]}`;
+
+      if (molhosSelecionados[nome] > 0) {
+        bloco.querySelector(".btn-sub-molho").style.display = "block";
+      } else {
+        bloco.querySelector(".btn-sub-molho").style.display = "none";
+      }
+
+      totalProduto += preco;
+
       atualizarPrecoNoModal();
     };
   });
 
-  document.querySelectorAll(".btn-sub-molho").forEach((botao) => {
-    botao.onclick = () => {
-      const container = botao.parentElement;
-      const nomeMolho = container.querySelector("p").innerText.trim();
-      const precoMolho = parseFloat(
-        container
+  document.querySelectorAll(".btn-sub-molho").forEach((btn) => {
+    btn.onclick = () => {
+      const bloco = btn.parentElement;
+      const nome = bloco.querySelector("p").innerText.split("x")[0].trim();
+      const preco = parseFloat(
+        bloco
           .querySelector(".preco-molho")
           .innerText.replace("R$", "")
           .replace(",", ".")
       );
 
-      if (molhosSelecionados[nomeMolho] > 0) {
-        molhosSelecionados[nomeMolho]--;
-        totalProduto = Math.max(precoPastel, totalProduto - precoMolho);
+      molhosSelecionados[nome] = (molhosSelecionados[nome] || 0) - 1;
 
-        if (molhosSelecionados[nomeMolho] === 0)
-          delete molhosSelecionados[nomeMolho];
+      if (molhosSelecionados[nome] >= 0) {
+        totalProduto = Math.max(precoPastel, totalProduto - preco);
+
+        if (molhosSelecionados[nome] === 0) {
+          bloco.querySelector(".btn-sub-molho").style.display = "none";
+        }
       }
+
+      bloco.querySelector(
+        ".quantidade"
+      ).innerText = ` x${molhosSelecionados[nome]}`;
+
       atualizarPrecoNoModal();
+    };
+  });
+
+  document.querySelectorAll(".btn-del-molho").forEach((btn) => {
+    btn.onclick = async () => {
+      if (!isAdmin) return;
+
+      const idMolho = btn.dataset.id;
+
+      if (!confirm("Excluir este molho?")) return;
+
+      const { error } = await supabase
+        .from("molhos")
+        .delete()
+        .eq("id", idMolho);
+
+      if (error) {
+        alert("Erro ao excluir molho!");
+        return;
+      }
+
+      await carregarMolhos();
+      gerarMolhos(categoriaAtualModal);
     };
   });
 }
-
-document.querySelectorAll(".btn-sub-molho").forEach((botao) => {
-  botao.addEventListener("click", () => {
-    const container = botao.parentElement;
-    const nomeMolho = container.querySelector("p").innerText.trim();
-    const precoMolho = parseFloat(
-      container
-        .querySelector(".preco-molho")
-        .innerText.replace("R$", "")
-        .replace(",", ".")
-    );
-
-    if (molhosSelecionados[nomeMolho] > 0) {
-      molhosSelecionados[nomeMolho]--;
-      totalProduto = Math.max(precoPastel, totalProduto - precoMolho);
-      if (molhosSelecionados[nomeMolho] === 0)
-        delete molhosSelecionados[nomeMolho];
-    }
-
-    atualizarPrecoNoModal();
-  });
-});
 
 /* ======= ATUALIZAR PREÇO ======= */
 function atualizarPrecoNoModal() {
@@ -545,11 +543,11 @@ function adicionarProdutoNoDOM(pastel) {
       <button class="btn-add-pastel">Adicionar</button>
 
       <div class="actions-admin" style="display: none;">
-        <button ><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" width="19" stroke-width="1.5" stroke="currentColor" class="size-6">
+        <button ><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" width="16" stroke-width="1.5" stroke="currentColor" class="size-6">
   <path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L6.832 19.82a4.5 4.5 0 0 1-1.897 1.13l-2.685.8.8-2.685a4.5 4.5 0 0 1 1.13-1.897L16.863 4.487Zm0 0L19.5 7.125" />
 </svg>
 </button>
-        <button ><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" width="19" stroke-width="1.5" stroke="currentColor" class="size-6">
+        <button ><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" width="16" stroke-width="1.5" stroke="currentColor" class="size-6">
   <path stroke-linecap="round" stroke-linejoin="round" d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0" />
 </svg>
 </button>
@@ -701,38 +699,106 @@ function abrirModalProduto(produto) {
     SALVAR MOLHO
   =========================== */
 
-function salvarMolho() {
-  const categoria = document.getElementById("molho-categoria");
-  const nome = document.getElementById("molho-nome");
-  const preco = document.getElementById("molho-preco");
-
-  let erro = false;
-
-  limparErro(categoria);
-  limparErro(nome);
-  limparErro(preco);
-
-  if (categoria.value === "") {
-    marcarErro(categoria);
-    erro = true;
-  }
-  if (nome.value.trim() === "") {
-    marcarErro(nome);
-    erro = true;
-  }
-  if (preco.value === "" || preco.value <= 0) {
-    marcarErro(preco);
-    erro = true;
+async function salvarMolho() {
+  if (!isAdmin) {
+    return mostrarMensagem(
+      "msg-molho",
+      "Apenas admins podem adicionar molhos!",
+      "erro"
+    );
   }
 
-  if (erro)
-    return mostrarMensagem("msg-molho", "Preencha todos os campos!", "erro");
+  const categoria = document.getElementById("molho-categoria").value;
+  const nome = document.getElementById("molho-nome").value.trim();
+  const preco = parseFloat(document.getElementById("molho-preco").value);
+  const imagemInput = document.getElementById("molho-imagem");
+
+  if (!categoria || !nome || !preco || !imagemInput.files.length) {
+    return mostrarMensagem(
+      "msg-molho",
+      "Preencha todos os campos e selecione uma imagem!",
+      "erro"
+    );
+  }
+
+  const file = imagemInput.files[0];
+  const safeName = file.name.replace(/\s+/g, "_");
+  const fileName = `${Date.now()}_${safeName}`;
+
+  // Upload
+  const { error: uploadError } = await supabase.storage
+    .from("pastelaria")
+    .upload(fileName, file, { cacheControl: "3600", upsert: false });
+
+  if (uploadError) {
+    console.error(uploadError);
+    return mostrarMensagem("msg-molho", "Erro ao enviar imagem!", "erro");
+  }
+
+  // URL Pública
+  const { data: publicUrlData } = supabase.storage
+    .from("pastelaria")
+    .getPublicUrl(fileName);
+
+  const publicUrl =
+    publicUrlData?.publicUrl ||
+    publicUrlData?.public_url ||
+    publicUrlData?.publicURL;
+
+  if (!publicUrl) {
+    return mostrarMensagem("msg-molho", "Erro ao obter URL da imagem!", "erro");
+  }
+
+  // Inserir no banco
+  const { data, error } = await supabase
+    .from("molhos")
+    .insert([
+      {
+        categoria,
+        nome,
+        preco,
+        imagem_url: publicUrl,
+      },
+    ])
+    .select();
+
+  if (error) {
+    console.error(error);
+    return mostrarMensagem("msg-molho", "Erro ao salvar molho!", "erro");
+  }
 
   mostrarMensagem("msg-molho", "Molho salvo com sucesso!", "sucesso");
+  fecharModal2("modal-add-molho");
 
-  setTimeout(() => {
-    fecharModal2("modal-add-molho");
-  }, 1500);
+  await carregarMolhos();
+  gerarMolhos(categoria);
+}
+
+async function carregarMolhos() {
+  try {
+    const { data, error } = await supabase.from("molhos").select("*");
+    if (error) {
+      console.error("Erro ao carregar molhos:", error);
+      return;
+    }
+
+    molhosPorCategoria = {};
+
+    data.forEach((molho) => {
+      const categoria = molho.categoria || "salgados";
+      if (!molhosPorCategoria[categoria]) molhosPorCategoria[categoria] = [];
+      molhosPorCategoria[categoria].push({
+        id: molho.id, // ← importante
+        nome: molho.nome,
+        preco: parseFloat(molho.preco) || 0,
+        img: molho.imagem_url,
+      });
+    });
+
+    console.log("Molhos carregados:", molhosPorCategoria);
+  } catch (err) {
+    console.error("Erro inesperado em carregarMolhos:", err);
+  }
 }
 
 /* ===========================
@@ -895,4 +961,5 @@ document.addEventListener("DOMContentLoaded", async () => {
   updateCartCount(); // contador do carrinho
   await checarAdmin(); // checa se já existe admin logado
   await carregarPasteis(); // carrega todos os pasteis do banco
+  await carregarMolhos();
 });

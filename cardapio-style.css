@@ -126,7 +126,6 @@ h2 {
   right: 0;
   top: 0;
   display: flex;
-  gap: 6px;
   color: #000;
   background: transparent;
 }
@@ -137,8 +136,12 @@ h2 {
 
 .actions-admin button:last-child {
   background: transparent;
+  color: var(--vermelho);
 }
-
+.btn-del-molho svg {
+  background: transparent;
+  color: var(--vermelho);
+}
 .produto img {
   border-radius: 8px;
   margin: 0;
@@ -222,7 +225,8 @@ strong {
   overflow: hidden;
   max-height: 90%;
   width: 72%;
-  padding: 30px 20px 20px 20px;
+  padding: 15px;
+  padding-top: 23px;
   gap: 20px;
   flex-direction: column;
   overflow-y: auto;
@@ -274,8 +278,8 @@ strong {
 
 .fechar {
   position: fixed;
-  top: 5px;
-  right: 13px;
+  top: 1px;
+  right: 5px;
   font-size: 28px;
   color: #333;
   cursor: pointer;
@@ -298,17 +302,19 @@ strong {
   display: flex;
   align-items: center;
 }
+.molhinho {
+  gap: 7px;
+}
 .btn-add-molho {
   position: absolute;
   display: flex;
   right: 20px;
-  gap: 12px;
+  background: #464545;
 }
 .btn-sub-molho {
   position: absolute;
   display: flex;
   right: 60px;
-  gap: 12px;
 }
 .molho-adicionar button {
   border: none;

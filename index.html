@@ -45,11 +45,7 @@
         </svg>
         <span id="count-carrinho">0</span>
       </button>
-      <img
-        src="./images/Logo-La-Pastelitos-sem-fundo.png"
-        alt="Logo Lá Pastelito’s"
-        class="logo"
-      />
+      <img src="" alt="Logo Lá Pastelito’s" class="logo" />
       <nav>
         <button class="nav-btn" onclick="mostrarCategoria('salgados')">
           Pasteis Salgados
@@ -144,20 +140,25 @@
     </div>
 
     <!-- MODAL: EDITAR LOGO -->
+    <!-- Modal Editar Logo -->
     <div class="admin-modal" id="modal-editar-logo">
       <div class="admin-modal-content">
         <span class="fechar-modal" onclick="fecharModal2('modal-editar-logo')"
           >&times;</span
         >
+
         <h2>Editar Logo</h2>
 
         <label>Nova Imagem:</label>
-        <input type="file" id="logo-imagem" />
+        <input type="file" id="logo-imagem" accept="image/*" />
 
         <button onclick="salvarLogo()">Salvar Logo</button>
+
         <p class="msg-retorno" id="msg-logo" style="display: none"></p>
       </div>
     </div>
+
+    <!-- Logo no site -->
 
     <!-- MODAL DE VENDAS -->
     <div class="admin-modal" id="modal-vendas">

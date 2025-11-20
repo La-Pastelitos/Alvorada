@@ -804,22 +804,85 @@ async function carregarMolhos() {
 /* ===========================
     SALVAR LOGO
   =========================== */
+async function salvarLogo() {
+  const imagemInput = document.getElementById("logo-imagem");
+  const msg = "msg-logo";
 
-function salvarLogo() {
-  const imagem = document.getElementById("logo-imagem");
+  limparErro(imagemInput);
 
-  limparErro(imagem);
-
-  if (imagem.files.length === 0) {
-    marcarErro(imagem);
-    return mostrarMensagem("msg-logo", "Selecione uma nova imagem!", "erro");
+  if (!imagemInput.files.length) {
+    marcarErro(imagemInput);
+    return mostrarMensagem(msg, "Selecione uma imagem!", "erro");
   }
 
-  mostrarMensagem("msg-logo", "Logo atualizada com sucesso!", "sucesso");
+  const file = imagemInput.files[0];
+
+  //--------------------------------------------------------------------
+  // 1. Enviar para o Supabase (substituindo a logo antiga)
+  //--------------------------------------------------------------------
+  const { error: uploadError } = await supabase.storage
+    .from("pastelaria")
+    .upload("logo/logo.png", file, {
+      cacheControl: "3600",
+      upsert: true, // substitui a imagem antiga
+      contentType: file.type,
+    });
+
+  if (uploadError) {
+    console.error("Erro no upload da logo:", uploadError);
+
+    if (uploadError.message.includes("permission")) {
+      return mostrarMensagem(
+        msg,
+        "Apenas administradores podem alterar a logo.",
+        "erro"
+      );
+    }
+
+    return mostrarMensagem(msg, "Erro ao enviar a nova logo!", "erro");
+  }
+
+  //--------------------------------------------------------------------
+  // 2. Obter URL pública corrigida (igual ao salvarPastel)
+  //--------------------------------------------------------------------
+  const getUrlRes = supabase.storage
+    .from("pastelaria")
+    .getPublicUrl("logo/logo.png");
+
+  const publicUrl =
+    (getUrlRes &&
+      (getUrlRes.publicUrl || (getUrlRes.data && getUrlRes.data.publicUrl))) ||
+    null;
+
+  if (!publicUrl) {
+    return mostrarMensagem(
+      msg,
+      "Logo enviada, mas falha ao obter URL pública.",
+      "erro"
+    );
+  }
+
+  //--------------------------------------------------------------------
+  // 3. Atualizar a logo no site (forçando atualizar mesmo com cache)
+  //--------------------------------------------------------------------
+  const logoImg = document.querySelector(".logo");
+  logoImg.src = `${publicUrl}?t=${Date.now()}`; // evita cache antigo
+
+  //--------------------------------------------------------------------
+  // 4. Mensagem de sucesso igual ao seu padrão
+  //--------------------------------------------------------------------
+  mostrarMensagem(msg, "Logo atualizada com sucesso!", "sucesso");
 
   setTimeout(() => {
     fecharModal2("modal-editar-logo");
   }, 1500);
+}
+const LOGO_PATH = "logo/logo.png";
+
+async function carregarLogo() {
+  const { data } = supabase.storage.from("pastelaria").getPublicUrl(LOGO_PATH);
+
+  document.querySelector(".logo").src = data.publicUrl + "?t=" + Date.now();
 }
 
 /* ===========================
@@ -962,4 +1025,5 @@ document.addEventListener("DOMContentLoaded", async () => {
   await checarAdmin(); // checa se já existe admin logado
   await carregarPasteis(); // carrega todos os pasteis do banco
   await carregarMolhos();
+  await carregarLogo();
 });

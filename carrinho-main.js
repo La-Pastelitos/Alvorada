@@ -17,6 +17,21 @@ function calcularTotal(cart) {
     0
   );
 }
+const telefoneInput = document.getElementById("input-telefone");
+
+telefoneInput.addEventListener("input", (e) => {
+  let val = e.target.value.replace(/\D/g, ""); // remove tudo que não é número
+  if (val.length > 11) val = val.slice(0, 11);
+
+  // Formata para (XX) XXXXX-XXXX ou (XX) XXXX-XXXX
+  if (val.length > 6) {
+    e.target.value = `(${val.slice(0, 2)}) ${val.slice(2, 7)}-${val.slice(7)}`;
+  } else if (val.length > 2) {
+    e.target.value = `(${val.slice(0, 2)}) ${val.slice(2)}`;
+  } else {
+    e.target.value = val;
+  }
+});
 
 document.getElementById("voltar").addEventListener("click", () => {
   window.location.href = "index.html";

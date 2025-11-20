@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Relatório de Vendas</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="light" />
+    <link rel="stylesheet" href="vendas-style.css" />
+  </head>
+
+  <body>
+    <h1>Relatório de Vendas</h1>
+
+    <table id="tabela-vendas">
+      <thead>
+        <tr>
+          <th data-label="Cliente">Cliente</th>
+          <th data-label="total">Total (R$)</th>
+          <th>ação</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <button id="btn-adicionar-gasto">Adicionar Gasto</button>
+    <div class="totais">
+      <div>Total Bruto: R$ <span id="total-bruto">0,00</span></div>
+      <div>Total Gastos: R$ <span id="total-gastos">0,00</span></div>
+      <div>Total Líquido: R$ <span id="total-liquido">0,00</span></div>
+    </div>
+
+    <div id="modal-gasto" class="modal">
+      <div class="modal-conteudo">
+        <span class="fechar" onclick="fecharModalGasto()">&times;</span>
+        <h2>Adicionar Gasto</h2>
+        <input type="text" id="gasto-nome" placeholder="Nome do gasto" />
+        <input
+          type="number"
+          id="gasto-valor"
+          placeholder="Valor do gasto"
+          step="0.01"
+        />
+        <button id="btn-salvar-gasto">Salvar Gasto</button>
+      </div>
+    </div>
+
+    <!-- Biblioteca Supabase UMD -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.0/dist/umd/supabase.min.js"></script>
+
+    <script>
+      // 🔹 Criar client Supabase GLOBALMENTE (sem const)
+      const supabase = window.supabase.createClient(
+        "https://fbxixhpmuzeljhfsbcmo.supabase.co",
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZieGl4aHBtdXplbGpoZnNiY21vIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjMzMjEwOTAsImV4cCI6MjA3ODg5NzA5MH0.VSRxLsh57oTh71aa9dsC3W8kXuku1cI6R3AFdNnZ1-A"
+      );
+    </script>
+    <script src="vendas-main.js"></script>
+  </body>
+</html>

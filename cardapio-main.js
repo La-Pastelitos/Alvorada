@@ -27,6 +27,9 @@ function updateCartCount() {
   const totalItems = cart.reduce((s, it) => s + (it.qty || 1), 0);
   countEl.innerText = totalItems;
 }
+document.getElementById("vendas").addEventListener("click", () => {
+  window.location.href = "vendas.html";
+});
 function showMessage(msg, tempo = 2000) {
   let mensagemDiv = document.getElementById("mensagem-info");
   if (!mensagemDiv) {

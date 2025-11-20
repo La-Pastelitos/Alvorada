@@ -93,27 +93,17 @@ td:nth-child(4) {
   font-size: 14px;
   transition: 0.2s;
   margin: 5px;
+  background: transparent;
 }
 .td-editar-remover {
   display: flex;
 }
 
 /* Editar */
-.btn-editar {
-  background: #3498db;
-  color: #fff;
-}
-.btn-editar:hover {
-  background: #2980b9;
-}
 
 /* Remover */
 .btn-remover {
-  background: #e74c3c;
-  color: #fff;
-}
-.btn-remover:hover {
-  background: #c0392b;
+  color: var(--vermelho);
 }
 
 .total-final {
